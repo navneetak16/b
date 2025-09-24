@@ -9,17 +9,16 @@ app.use(express.urlencoded({ extended: true }));
 const customData = {
   owned: {
     "profile.avatar": [
-        { id: "char_female_01_skin_0004" },
-        { id: "char_female_03_skin_0004" },
-        { id: "char_female_06_skin_0000" },
-        { id: "char_male_01_skin_0004" },
-        { id: "char_male_07_skin_0002" },
-        { id: "char_droid_01_skin_0002" },
-        { id: "char_droid_00_skin_0001" },
-        { id: "char_droid_00_skin_0002" },
-        { id: "char_droid_01_skin_0001" }
-      ]
-    },
+      { id: "char_female_01_skin_0004" },
+      { id: "char_female_03_skin_0004" },
+      { id: "char_female_06_skin_0000" },
+      { id: "char_male_01_skin_0004" },
+      { id: "char_male_07_skin_0002" },
+      { id: "char_droid_01_skin_0002" },
+      { id: "char_droid_00_skin_0001" },
+      { id: "char_droid_00_skin_0002" },
+      { id: "char_droid_01_skin_0001" }
+    ],
     "trails": [
       { id: "trl_0001" }, { id: "trl_0002" }, { id: "trl_0003" },
       { id: "trl_0004" }, { id: "trl_0005" }, { id: "trl_0006" },
@@ -34,6 +33,7 @@ const customData = {
     ]
   }
 };
+
 
 app.all("*", async (req, res) => {
   try {
