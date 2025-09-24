@@ -1,58 +1,53 @@
 const express = require('express');
-const axios = require('axios');
+const http2 = require('http2');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Middleware to parse JSON bodies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Catch-all proxy route for all endpoints
-app.use(async (req, res) => {
-    try {
-        // Construct target URL dynamically
-        const targetUrl = `https://prod.api.indusgame.com${req.originalUrl}`;
+// Catch-all route to proxy all requests
+app.all('*', async (req, res) => {
+    const client = http2.connect('https://prod.api.indusgame.com');
 
-        // Forward request to the target API using streaming
-        const response = await axios({
-            method: req.method,
-            url: targetUrl,
-            headers: {
-                ...req.headers,
-                host: 'prod.api.indusgame.com', // ensure host header is correct
-            },
-            data: req.body,
-            params: req.query,
-            responseType: 'stream',
-            validateStatus: () => true // allow all HTTP status codes
+    // Map Express method to HTTP/2
+    const headers = {
+        ':method': req.method,
+        ':path': req.originalUrl,
+        'content-type': req.headers['content-type'] || 'application/json',
+        'x-request-token': req.headers['x-request-token'] || '',
+        'x-build-version': req.headers['x-build-version'] || '',
+        'x-social-info': req.headers['x-social-info'] || '',
+        'x-device-id': req.headers['x-device-id'] || '',
+        'user-agent': req.headers['user-agent'] || 'Node.js-HTTP2-Proxy',
+        'accept-encoding': req.headers['accept-encoding'] || 'gzip'
+    };
+
+    const proxyReq = client.request(headers);
+
+    // Forward response headers and status
+    proxyReq.on('response', (responseHeaders, flags) => {
+        res.status(responseHeaders[':status'] || 200);
+        Object.entries(responseHeaders).forEach(([k, v]) => {
+            if (!k.startsWith(':')) res.setHeader(k, v);
         });
+    });
 
-        // Set response status
-        res.status(response.status);
+    // Pipe response data
+    proxyReq.on('data', chunk => res.write(chunk));
+    proxyReq.on('end', () => {
+        res.end();
+        client.close();
+    });
 
-        // Copy response headers, skipping 'transfer-encoding' for streaming
-        Object.entries(response.headers).forEach(([key, value]) => {
-            if (key.toLowerCase() !== 'transfer-encoding') {
-                res.setHeader(key, value);
-            }
-        });
-
-        // Pipe response stream to client
-        response.data.pipe(res);
-
-        // Handle streaming errors
-        response.data.on('error', (err) => {
-            console.error('Stream error:', err.message);
-            res.end();
-        });
-
-    } catch (error) {
-        console.error('Proxy error:', error.message);
-        res.status(500).json({ error: 'Proxy error' });
+    // Pipe request body
+    if (req.body && Object.keys(req.body).length > 0) {
+        proxyReq.write(JSON.stringify(req.body));
     }
+    proxyReq.end();
 });
 
+// Start server
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Proxy server running on port ${PORT}`);
+    console.log(`HTTP/2 Proxy Server running on port ${PORT}`);
 });
