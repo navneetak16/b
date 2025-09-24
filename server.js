@@ -6,41 +6,42 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Proxy handler
+// Catch-all proxy route for all endpoints
 app.use(async (req, res) => {
     try {
+        // Construct target URL dynamically
         const targetUrl = `https://prod.api.indusgame.com${req.originalUrl}`;
 
-        // Axios request with responseType 'stream' to handle large responses
+        // Forward request to the target API using streaming
         const response = await axios({
             method: req.method,
             url: targetUrl,
             headers: {
                 ...req.headers,
-                host: 'prod.api.indusgame.com' // override host header
+                host: 'prod.api.indusgame.com', // ensure host header is correct
             },
             data: req.body,
             params: req.query,
             responseType: 'stream',
-            validateStatus: () => true, // allow all status codes
+            validateStatus: () => true // allow all HTTP status codes
         });
 
         // Set response status
         res.status(response.status);
 
-        // Set response headers
+        // Copy response headers, skipping 'transfer-encoding' for streaming
         Object.entries(response.headers).forEach(([key, value]) => {
-            // Some headers like 'transfer-encoding' may cause issues in streaming, so you might want to skip them
             if (key.toLowerCase() !== 'transfer-encoding') {
                 res.setHeader(key, value);
             }
         });
 
-        // Pipe the response stream directly to client
+        // Pipe response stream to client
         response.data.pipe(res);
 
-        // Handle errors during streaming
+        // Handle streaming errors
         response.data.on('error', (err) => {
             console.error('Stream error:', err.message);
             res.end();
