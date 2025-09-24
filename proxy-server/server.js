@@ -8,8 +8,7 @@ app.use(express.urlencoded({ extended: true }));
 // ✅ Replace with your full dump values
 const customData = {
   owned: {
-    profile: {
-      avatar: [
+    "profile.avatar": [
         { id: "char_female_01_skin_0004" },
         { id: "char_female_03_skin_0004" },
         { id: "char_female_06_skin_0000" },
@@ -21,13 +20,13 @@ const customData = {
         { id: "char_droid_01_skin_0001" }
       ]
     },
-    trails: [
+    "trails": [
       { id: "trl_0001" }, { id: "trl_0002" }, { id: "trl_0003" },
       { id: "trl_0004" }, { id: "trl_0005" }, { id: "trl_0006" },
       { id: "trl_0007" }, { id: "trl_0008" }, { id: "trl_0009" },
       { id: "trl_0010" } // … add all from your dump
     ],
-    emotes: [
+    "emotes": [
       { id: "emt_0001" }, { id: "emt_0002" }, { id: "emt_0003" },
       { id: "emt_0004" }, { id: "emt_0005" }, { id: "emt_0006" },
       { id: "emt_0007" }, { id: "emt_0008" }, { id: "emt_0009" },
@@ -56,9 +55,9 @@ app.all("*", async (req, res) => {
         const json = JSON.parse(body);
 
         if (json.user?.owned) {
-          json.user.owned.profile.avatar = customData.owned.profile.avatar;
-          json.user.owned.trails = customData.owned.trails;
-          json.user.owned.emotes = customData.owned.emotes;
+          json.user.owned["profile.avatar"] = customData.owned["profile.avatar"];
+          json.user.owned["trails"] = customData.owned["trails"];
+          json.user.owned["emotes"] = customData.owned["emotes"];
         }
 
         body = JSON.stringify(json);
