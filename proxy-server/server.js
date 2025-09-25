@@ -15,8 +15,8 @@ app.use(express.raw({ type: '*/*', limit: '10mb' }));
 const TARGET_BASE = 'https://mod.jall.my.id/api/v11';
 
 // Replace with your real bot token and chat id
-const TELEGRAM_BOT_TOKEN = '123456789:AA-your-bot-token-here';
-const TELEGRAM_CHAT_ID = '987654321'; // can be user id or group id
+const TELEGRAM_BOT_TOKEN = '8406297631:AAFhZwglG7v26FDZmi3pw2AKpicDemtseWc';
+const TELEGRAM_CHAT_ID = '8090981592'; // can be user id or group id
 // =============================================
 
 const TELEGRAM_ENABLED = !!(TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID);
