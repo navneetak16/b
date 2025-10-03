@@ -2,279 +2,158 @@ import express from "express";
 import fetch from "node-fetch";
 
 const app = express();
+
+// Middleware to capture raw request body
+app.use((req, res, next) => {
+  let data = "";
+  req.on("data", chunk => { data += chunk; });
+  req.on("end", () => {
+    req.rawBody = data;
+    next();
+  });
+});
+
+// Middleware to parse JSON and URL-encoded bodies as usual
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Replace with your full dump values
+// ✅ Your custom owned data
 const customData = {
   owned: {
     "profile.avatar": [
-       { id: "char_droid_01_skin_0000" },
-{ id: "char_droid_01_skin_0001" },
-{ id: "char_droid_01_skin_0002" },
-{ id: "char_droid_02_skin_0000" },
-{ id: "char_droid_03_skin_0000" },
-{ id: "char_female_01_skin_0004" },
-{ id: "char_female_01_skin_0005" },
-{ id: "char_female_01_skin_0006" },
-{ id: "char_female_01_skin_0007" },
-{ id: "char_female_01_skin_0008" },
-{ id: "char_female_01_skin_0009" },
-{ id: "char_female_01_skin_0010" },
-{ id: "char_female_02_skin_0000" },
-{ id: "char_female_03_skin_0004" },
-{ id: "char_female_03_skin_0005" },
-{ id: "char_female_03_skin_0006" },
-{ id: "char_female_03_skin_0007" },
-{ id: "char_female_03_skin_0008" },
-{ id: "char_female_03_skin_0009" },
-{ id: "char_female_03_skin_0011" },
-{ id: "char_female_03_skin_0012" },
-{ id: "char_female_04_skin_0000" },
-{ id: "char_female_05_skin_0000" },
-{ id: "char_female_06_skin_0000" },
-{ id: "char_female_06_skin_0001" },
-{ id: "char_female_06_skin_0002" },
-{ id: "char_female_07_skin_0000" },
-{ id: "char_female_08_skin_0000" },
-{ id: "char_male_01_skin_0004" },
-{ id: "char_male_01_skin_0005" },
-{ id: "char_male_01_skin_0006" },
-{ id: "char_male_01_skin_0007" },
-{ id: "char_male_01_skin_0008" },
-{ id: "char_male_01_skin_0009" },
-{ id: "char_male_01_skin_0010" },
-{ id: "char_male_01_skin_0011" },
-{ id: "char_male_01_skin_0012" },
-{ id: "char_male_01_skin_0013" },
-{ id: "char_male_02_skin_0000" },
-{ id: "char_male_03_skin_0002" },
-{ id: "char_male_03_skin_0003" },
-{ id: "char_male_03_skin_0004" },
-{ id: "char_male_03_skin_0005" },
-{ id: "char_male_03_skin_0006" },
-{ id: "char_male_03_skin_0007" },
-{ id: "char_male_03_skin_0008" },
-{ id: "char_male_03_skin_0009" },
-{ id: "char_male_04_skin_0000" },
-{ id: "char_male_05_skin_0000" },
-{ id: "char_male_05_skin_0001" },
-{ id: "char_male_06_skin_0000" },
-{ id: "char_male_06_skin_0001" },
-{ id: "char_male_06_skin_0002" },
-{ id: "char_male_06_skin_0003" },
-{ id: "char_male_07_skin_0000" },
-{ id: "char_male_07_skin_0001" },
-{ id: "char_male_07_skin_0002" },
-{ id: "char_male_07_skin_0003" },
-{ id: "char_male_08_skin_0000" },
-{ id: "char_male_08_skin_0001" },
-{ id: "char_male_09_skin_0000" },
-{ id: "char_male_09_skin_0001" },
-{ id: "char_male_09_skin_0002" },
-{ id: "char_male_10_skin_0000" },
-{ id: "char_male_11_skin_0000" }
-      ],
+      { id: "char_droid_01_skin_0000" },
+      { id: "char_droid_01_skin_0001" },
+      { id: "char_droid_01_skin_0002" },
+      { id: "char_droid_02_skin_0000" },
+      { id: "char_droid_03_skin_0000" },
+      { id: "char_female_01_skin_0004" },
+      { id: "char_female_01_skin_0005" },
+      { id: "char_female_01_skin_0006" },
+      { id: "char_female_01_skin_0007" },
+      { id: "char_female_01_skin_0008" },
+      { id: "char_female_01_skin_0009" },
+      { id: "char_female_01_skin_0010" },
+      { id: "char_female_02_skin_0000" },
+      { id: "char_female_03_skin_0004" },
+      { id: "char_female_03_skin_0005" },
+      { id: "char_female_03_skin_0006" },
+      { id: "char_female_03_skin_0007" },
+      { id: "char_female_03_skin_0008" },
+      { id: "char_female_03_skin_0009" },
+      { id: "char_female_03_skin_0011" },
+      { id: "char_female_03_skin_0012" },
+      { id: "char_female_04_skin_0000" },
+      { id: "char_female_05_skin_0000" },
+      { id: "char_female_06_skin_0000" },
+      { id: "char_female_06_skin_0001" },
+      { id: "char_female_06_skin_0002" },
+      { id: "char_female_07_skin_0000" },
+      { id: "char_female_08_skin_0000" },
+      { id: "char_male_01_skin_0004" },
+      { id: "char_male_01_skin_0005" },
+      { id: "char_male_01_skin_0006" },
+      { id: "char_male_01_skin_0007" },
+      { id: "char_male_01_skin_0008" },
+      { id: "char_male_01_skin_0009" },
+      { id: "char_male_01_skin_0010" },
+      { id: "char_male_01_skin_0011" },
+      { id: "char_male_01_skin_0012" },
+      { id: "char_male_01_skin_0013" },
+      { id: "char_male_02_skin_0000" },
+      { id: "char_male_03_skin_0002" },
+      { id: "char_male_03_skin_0003" },
+      { id: "char_male_03_skin_0004" },
+      { id: "char_male_03_skin_0005" },
+      { id: "char_male_03_skin_0006" },
+      { id: "char_male_03_skin_0007" },
+      { id: "char_male_03_skin_0008" },
+      { id: "char_male_03_skin_0009" },
+      { id: "char_male_04_skin_0000" },
+      { id: "char_male_05_skin_0000" },
+      { id: "char_male_05_skin_0001" },
+      { id: "char_male_06_skin_0000" },
+      { id: "char_male_06_skin_0001" },
+      { id: "char_male_06_skin_0002" },
+      { id: "char_male_06_skin_0003" },
+      { id: "char_male_07_skin_0000" },
+      { id: "char_male_07_skin_0001" },
+      { id: "char_male_07_skin_0002" },
+      { id: "char_male_07_skin_0003" },
+      { id: "char_male_08_skin_0000" },
+      { id: "char_male_08_skin_0001" },
+      { id: "char_male_09_skin_0000" },
+      { id: "char_male_09_skin_0001" },
+      { id: "char_male_09_skin_0002" },
+      { id: "char_male_10_skin_0000" },
+      { id: "char_male_11_skin_0000" }
+    ],
     trails: [
       { id: "trl_0001" },
-{ id: "trl_0002" },
-{ id: "trl_0003" },
-{ id: "trl_0004" },
-{ id: "trl_0005" },
-{ id: "trl_0020" },
-{ id: "trl_0021" },
-{ id: "trl_0022" },
-{ id: "trl_0023" },
-{ id: "trl_0024" },
-{ id: "trl_0025" },
-{ id: "trl_0026" },
-{ id: "trl_0027" },
-{ id: "trl_0028" },
-{ id: "trl_0029" },
-{ id: "trl_0030" },
-{ id: "trl_0031" },
-{ id: "trl_0032" },
-{ id: "trl_0033" },
-{ id: "trl_0034" },
-{ id: "trl_0035" },
-{ id: "trl_0036" },
-{ id: "trl_0037" },
-{ id: "trl_0038" },
-{ id: "trl_0039" },
-{ id: "trl_0040" },
-{ id: "trl_0041" },
-{ id: "trl_0042" },
-{ id: "trl_0043" },
-{ id: "trl_0044" },
-{ id: "trl_0045" },
-{ id: "trl_0046" },
-{ id: "trl_0047" },
-{ id: "trl_0048" },
-{ id: "trl_0049" },
-{ id: "trl_0050" },
-{ id: "trl_0051" },
-{ id: "trl_0052" },
-{ id: "trl_0053" },
-{ id: "trl_0054" },
-{ id: "trl_0055" },
-{ id: "trl_0056" },
-{ id: "trl_0057" },
-{ id: "trl_0058" },
-{ id: "trl_0059" },
-{ id: "trl_0060" },
-{ id: "trl_0061" },
-{ id: "trl_0062" },
-{ id: "trl_0063" },
-{ id: "trl_0064" },
-{ id: "trl_0065" }
+      { id: "trl_0002" },
+      { id: "trl_0003" },
+      { id: "trl_0004" },
+      { id: "trl_0005" }
+      // Add remaining trails...
     ],
     emotes: [
-     { id: "emt_0001" },
-{ id: "emt_0002" },
-{ id: "emt_0003" },
-{ id: "emt_0004" },
-{ id: "emt_0005" },
-{ id: "emt_0006" },
-{ id: "emt_0007" },
-{ id: "emt_0008" },
-{ id: "emt_0009" },
-{ id: "emt_0010" },
-{ id: "emt_0011" },
-{ id: "emt_0012" },
-{ id: "emt_0013" },
-{ id: "emt_0014" },
-{ id: "emt_0015" },
-{ id: "emt_0016" },
-{ id: "emt_0017" },
-{ id: "emt_0018" },
-{ id: "emt_0019" },
-{ id: "emt_0020" },
-{ id: "emt_0021" },
-{ id: "emt_0022" },
-{ id: "emt_0023" },
-{ id: "emt_0024" },
-{ id: "emt_0025" },
-{ id: "emt_0026" },
-{ id: "emt_0027" },
-{ id: "emt_0028" },
-{ id: "emt_0029" },
-{ id: "emt_0030" },
-{ id: "emt_0031" },
-{ id: "emt_0032" },
-{ id: "emt_0033" },
-{ id: "emt_0034" },
-{ id: "emt_0035" },
-{ id: "emt_0036" },
-{ id: "emt_0037" },
-{ id: "emt_0038" },
-{ id: "emt_0039" },
-{ id: "emt_0040" },
-{ id: "emt_0041" },
-{ id: "emt_0042" },
-{ id: "emt_0043" },
-{ id: "emt_0044" },
-{ id: "emt_0045" },
-{ id: "emt_0046" },
-{ id: "emt_0047" },
-{ id: "emt_0048" },
-{ id: "emt_0049" },
-{ id: "emt_0050" },
-{ id: "emt_0051" },
-{ id: "emt_0052" },
-{ id: "emt_0053" },
-{ id: "emt_0054" },
-{ id: "emt_0055" },
-{ id: "emt_0056" },
-{ id: "emt_0057" },
-{ id: "emt_0058" },
-{ id: "emt_0059" },
-{ id: "emt_0060" },
-{ id: "emt_0061" },
-{ id: "emt_0062" },
-{ id: "emt_0063" },
-{ id: "emt_0064" },
-{ id: "emt_0065" },
-{ id: "emt_0066" },
-{ id: "emt_0067" },
-{ id: "emt_0068" },
-{ id: "emt_0069" },
-{ id: "emt_0070" },
-{ id: "emt_0071" },
-{ id: "emt_0072" },
-{ id: "emt_0073" },
-{ id: "emt_0074" },
-{ id: "emt_0075" },
-{ id: "emt_0076" },
-{ id: "emt_0077" },
-{ id: "emt_0078" },
-{ id: "emt_0079" },
-{ id: "emt_0080" },
-{ id: "emt_0081" },
-{ id: "emt_0082" },
-{ id: "emt_0083" },
-{ id: "emt_0084" },
-{ id: "emt_0085" },
-{ id: "emt_0086" },
-{ id: "emt_0087" },
-{ id: "emt_0088" },
-{ id: "emt_0089" },
-{ id: "emt_0090" },
-{ id: "emt_0091" },
-{ id: "emt_0092" },
-{ id: "emt_0093" },
-{ id: "emt_0094" },
-{ id: "emt_0095" },
-{ id: "emt_0096" },
-{ id: "emt_0097" },
-{ id: "emt_0098" },
-{ id: "emt_0099" },
-{ id: "emt_0100" },
-{ id: "emt_0101" },
-{ id: "emt_0102" },
-{ id: "emt_0103" }
+      { id: "emt_0001" },
+      { id: "emt_0002" }
+      // Add remaining emotes...
     ]
   }
 };
 
+// Health check endpoint for Render
+app.get("/healthz", (req, res) => {
+  res.send("ok");
+});
+
+// Main proxy route
 app.all("*", async (req, res) => {
   try {
     const targetUrl = "https://prod.api.indusgame.com" + req.originalUrl;
+
     const headers = { ...req.headers };
-    delete headers.host;
+    delete headers.host; // optional, but usually safe
 
     const upstreamResponse = await fetch(targetUrl, {
       method: req.method,
       headers,
-      body: ["GET", "HEAD"].includes(req.method) ? undefined : JSON.stringify(req.body),
+      body: ["GET", "HEAD"].includes(req.method) ? undefined : req.rawBody
     });
 
     let body = await upstreamResponse.text();
 
-    // ✅ Modify guest-signups only
+    // Modify specific endpoints
     if (req.path.includes("/guest-signups") || req.path.includes("/user") || req.path.includes("/social/sign-in")) {
-      try {
-        const json = JSON.parse(body);
+      if (upstreamResponse.headers.get("content-type")?.includes("application/json")) {
+        try {
+          const json = JSON.parse(body);
 
-        if (json.user?.owned) {
-          json.user.owned["profile.avatar"] = customData.owned["profile.avatar"];
-          json.user.owned.trails = customData.owned.trails;
-          json.user.owned.emotes = customData.owned.emotes;
+          if (json.user?.owned) {
+            json.user.owned["profile.avatar"] = customData.owned["profile.avatar"];
+            json.user.owned.trails = customData.owned.trails;
+            json.user.owned.emotes = customData.owned.emotes;
+          }
+
+          body = JSON.stringify(json);
+        } catch (err) {
+          console.error("Error modifying JSON response:", err);
         }
-
-        body = JSON.stringify(json);
-      } catch (err) {
-        console.error("Error modifying guest-signups response:", err);
       }
     }
 
-    upstreamResponse.headers.forEach((value, key) => {
-      res.setHeader(key, value);
-    });
+    // Forward headers safely
+    for (const [key, value] of upstreamResponse.headers.entries()) {
+      if (!["transfer-encoding", "content-encoding", "content-length"].includes(key.toLowerCase())) {
+        res.setHeader(key, value);
+      }
+    }
 
     res.status(upstreamResponse.status).send(body);
   } catch (error) {
     console.error("Proxy error:", error);
-    res.status(500).send("Proxy error");
+    res.status(502).send("Bad Gateway");
   }
 });
 
