@@ -3,21 +3,18 @@ import fetch from "node-fetch";
 
 const app = express();
 
-// Middleware to capture raw request body
+// 1️⃣ Capture raw body BEFORE any other parser
 app.use((req, res, next) => {
   let data = "";
   req.on("data", chunk => { data += chunk; });
-  req.on("end", () => {
-    req.rawBody = data;
-    next();
-  });
+  req.on("end", () => { req.rawBody = data; next(); });
 });
 
-// Middleware to parse JSON and URL-encoded bodies as usual
+// 2️⃣ JSON and URL-encoded parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Your custom owned data
+// 3️⃣ Custom data to inject
 const customData = {
   owned: {
     "profile.avatar": [
@@ -32,90 +29,31 @@ const customData = {
       { id: "char_female_01_skin_0007" },
       { id: "char_female_01_skin_0008" },
       { id: "char_female_01_skin_0009" },
-      { id: "char_female_01_skin_0010" },
-      { id: "char_female_02_skin_0000" },
-      { id: "char_female_03_skin_0004" },
-      { id: "char_female_03_skin_0005" },
-      { id: "char_female_03_skin_0006" },
-      { id: "char_female_03_skin_0007" },
-      { id: "char_female_03_skin_0008" },
-      { id: "char_female_03_skin_0009" },
-      { id: "char_female_03_skin_0011" },
-      { id: "char_female_03_skin_0012" },
-      { id: "char_female_04_skin_0000" },
-      { id: "char_female_05_skin_0000" },
-      { id: "char_female_06_skin_0000" },
-      { id: "char_female_06_skin_0001" },
-      { id: "char_female_06_skin_0002" },
-      { id: "char_female_07_skin_0000" },
-      { id: "char_female_08_skin_0000" },
-      { id: "char_male_01_skin_0004" },
-      { id: "char_male_01_skin_0005" },
-      { id: "char_male_01_skin_0006" },
-      { id: "char_male_01_skin_0007" },
-      { id: "char_male_01_skin_0008" },
-      { id: "char_male_01_skin_0009" },
-      { id: "char_male_01_skin_0010" },
-      { id: "char_male_01_skin_0011" },
-      { id: "char_male_01_skin_0012" },
-      { id: "char_male_01_skin_0013" },
-      { id: "char_male_02_skin_0000" },
-      { id: "char_male_03_skin_0002" },
-      { id: "char_male_03_skin_0003" },
-      { id: "char_male_03_skin_0004" },
-      { id: "char_male_03_skin_0005" },
-      { id: "char_male_03_skin_0006" },
-      { id: "char_male_03_skin_0007" },
-      { id: "char_male_03_skin_0008" },
-      { id: "char_male_03_skin_0009" },
-      { id: "char_male_04_skin_0000" },
-      { id: "char_male_05_skin_0000" },
-      { id: "char_male_05_skin_0001" },
-      { id: "char_male_06_skin_0000" },
-      { id: "char_male_06_skin_0001" },
-      { id: "char_male_06_skin_0002" },
-      { id: "char_male_06_skin_0003" },
-      { id: "char_male_07_skin_0000" },
-      { id: "char_male_07_skin_0001" },
-      { id: "char_male_07_skin_0002" },
-      { id: "char_male_07_skin_0003" },
-      { id: "char_male_08_skin_0000" },
-      { id: "char_male_08_skin_0001" },
-      { id: "char_male_09_skin_0000" },
-      { id: "char_male_09_skin_0001" },
-      { id: "char_male_09_skin_0002" },
-      { id: "char_male_10_skin_0000" },
-      { id: "char_male_11_skin_0000" }
+      { id: "char_female_01_skin_0010" }
     ],
     trails: [
       { id: "trl_0001" },
       { id: "trl_0002" },
-      { id: "trl_0003" },
-      { id: "trl_0004" },
-      { id: "trl_0005" }
-      // Add remaining trails...
+      { id: "trl_0003" }
     ],
     emotes: [
       { id: "emt_0001" },
-      { id: "emt_0002" }
-      // Add remaining emotes...
+      { id: "emt_0002" },
+      { id: "emt_0003" }
     ]
   }
 };
 
-// Health check endpoint for Render
-app.get("/healthz", (req, res) => {
-  res.send("ok");
-});
-
-// Main proxy route
+// 4️⃣ Proxy all requests
 app.all("*", async (req, res) => {
   try {
     const targetUrl = "https://prod.api.indusgame.com" + req.originalUrl;
 
+    // Clone headers, remove host
     const headers = { ...req.headers };
-    delete headers.host; // optional, but usually safe
+    delete headers.host;
 
+    // Forward the request
     const upstreamResponse = await fetch(targetUrl, {
       method: req.method,
       headers,
@@ -124,36 +62,39 @@ app.all("*", async (req, res) => {
 
     let body = await upstreamResponse.text();
 
-    // Modify specific endpoints
-    if (req.path.includes("/guest-signups") || req.path.includes("/user") || req.path.includes("/social/sign-in")) {
-      if (upstreamResponse.headers.get("content-type")?.includes("application/json")) {
-        try {
-          const json = JSON.parse(body);
+    // Modify JSON safely
+    if (
+      req.path.includes("/guest-signups") ||
+      req.path.includes("/user") ||
+      req.path.includes("/social/sign-in")
+    ) {
+      try {
+        const json = JSON.parse(body);
 
-          if (json.user?.owned) {
-            json.user.owned["profile.avatar"] = customData.owned["profile.avatar"];
-            json.user.owned.trails = customData.owned.trails;
-            json.user.owned.emotes = customData.owned.emotes;
-          }
-
-          body = JSON.stringify(json);
-        } catch (err) {
-          console.error("Error modifying JSON response:", err);
+        if (json.user?.owned) {
+          json.user.owned["profile.avatar"] = customData.owned["profile.avatar"];
+          json.user.owned.trails = customData.owned.trails;
+          json.user.owned.emotes = customData.owned.emotes;
         }
+
+        body = JSON.stringify(json);
+      } catch (err) {
+        console.error("JSON modification error:", err);
       }
     }
 
     // Forward headers safely
-    for (const [key, value] of upstreamResponse.headers.entries()) {
-      if (!["transfer-encoding", "content-encoding", "content-length"].includes(key.toLowerCase())) {
+    upstreamResponse.headers.forEach((value, key) => {
+      // Avoid duplicate or unsafe headers
+      if (!["transfer-encoding", "content-length", "content-encoding"].includes(key.toLowerCase())) {
         res.setHeader(key, value);
       }
-    }
+    });
 
     res.status(upstreamResponse.status).send(body);
   } catch (error) {
     console.error("Proxy error:", error);
-    res.status(502).send("Bad Gateway");
+    res.status(500).send("Proxy internal error");
   }
 });
 
