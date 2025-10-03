@@ -36,7 +36,7 @@ app.all("*", async (req, res) => {
     let body = await upstreamResponse.text();
 
     // ✅ Modify guest-signups only
-    if (req.path.includes("/guest-signups") || req.path.includes("/user") || req.path.includes("/users")) {
+    if (req.path.includes("/guest-signups")) {
       try {
         const json = JSON.parse(body);
 
@@ -44,6 +44,22 @@ app.all("*", async (req, res) => {
           json.user.owned["profile.avatar"] = customData.owned["profile.avatar"];
           json.user.owned.trails = customData.owned.trails;
           json.user.owned.emotes = customData.owned.emotes;
+        }
+
+        body = JSON.stringify(json);
+      } catch (err) {
+        console.error("Error modifying guest-signups response:", err);
+      }
+    }
+
+    if (req.path.includes("/user") || req.path.includes("/users")) {
+      try {
+        const json = JSON.parse(body);
+
+        if (json.owned) {
+          json.owned["profile.avatar"] = customData.owned["profile.avatar"];
+          json.owned.trails = customData.owned.trails;
+          json.owned.emotes = customData.owned.emotes;
         }
 
         body = JSON.stringify(json);
