@@ -74,8 +74,7 @@ const customData = {
 { id: "char_male_09_skin_0002" },
 { id: "char_male_10_skin_0000" },
 { id: "char_male_11_skin_0000" }
-      ]
-    },
+      ],
     trails: [
       { id: "trl_0001" },
 { id: "trl_0002" },
