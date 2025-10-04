@@ -35,12 +35,22 @@ app.all("*", async (req, res) => {
 
     let body = await upstreamResponse.text();
 
-    if (req.path.includes("/equip")) {
+    // 1️⃣ Global storage for equipped items
+let lastEquipped = {};
+
+// 2️⃣ /equip handler
+if (req.path.includes("/equip") && req.method === "POST") {
   try {
-    res.status(204).end(); // 204 No Content response
-    return; // stop further processing
+    const equipBody = req.body;
+    if (equipBody && equipBody.equippedId && equipBody.equippedItems) {
+      // Save equipped items
+      lastEquipped[equipBody.equippedId] = equipBody.equippedItems;
+    }
+
+    res.status(204).end(); // 204 No Content
+    return;
   } catch (err) {
-    next(err); // or handle error
+    console.error("Error processing /equip request:", err);
   }
 }
 
@@ -69,20 +79,29 @@ app.all("*", async (req, res) => {
 
 
     if (req.path.includes("/user") || req.path.includes("/users")) {
-      try {
-        const json = JSON.parse(body);
+  try {
+    if (body && body.trim().length > 0) {
+      const json = JSON.parse(body);
 
-        if (json.owned) {
-          json.owned["profile.avatar"] = customData.owned["profile.avatar"];
-          json.owned.trails = customData.owned.trails;
-          json.owned.emotes = customData.owned.emotes;
-        }
-
-        body = JSON.stringify(json);
-      } catch (err) {
-        console.error("Error modifying guest-signups response:", err);
+      // Replace owned items as before
+      if (json.owned) {
+        json.owned["profile.avatar"] = customData.owned["profile.avatar"];
+        json.owned.trails = customData.owned.trails;
+        json.owned.emotes = customData.owned.emotes;
       }
+
+      // ✅ Apply last equipped items
+      if (!json.equipped) json.equipped = {};
+      for (const equippedId in lastEquipped) {
+        json.equipped[equippedId] = lastEquipped[equippedId];
+      }
+
+      body = JSON.stringify(json);
     }
+  } catch (err) {
+    console.error("Error modifying /user or /users response:", err);
+  }
+}
 
     upstreamResponse.headers.forEach((value, key) => {
       res.setHeader(key, value);
