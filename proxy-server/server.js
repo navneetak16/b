@@ -47,6 +47,10 @@ app.all("*", async (req, res) => {
   }
 }
 
+    if (req.path === "/get-broadcasts") {
+    delete req.headers["if-none-match"]; // remove it from request headers
+  }
+
     
     if (req.path.includes("/guest-signups")) {
       try {
