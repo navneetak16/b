@@ -7,6 +7,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // ✅ Replace with your full dump values
 const customData = {
+  equipped:{
+    "profile.avatar"[{id: "char_droid_01_skin_0001" }]
+    
+  },
   owned: {
     "profile.avatar": [
       { id: "char_droid_01_skin_0000" }, { id: "char_droid_01_skin_0001" }, { id: "char_droid_01_skin_0002" }, { id: "char_droid_02_skin_0000" }, { id: "char_droid_03_skin_0000" }, { id: "char_female_01_skin_0004" }, { id: "char_female_01_skin_0005" }, { id: "char_female_01_skin_0006" }, { id: "char_female_01_skin_0007" }, { id: "char_female_01_skin_0008" }, { id: "char_female_01_skin_0009" }, { id: "char_female_01_skin_0010" }, { id: "char_female_02_skin_0000" }, { id: "char_female_03_skin_0004" }, { id: "char_female_03_skin_0005" }, { id: "char_female_03_skin_0006" }, { id: "char_female_03_skin_0007" }, { id: "char_female_03_skin_0008" }, { id: "char_female_03_skin_0009" }, { id: "char_female_03_skin_0011" }, { id: "char_female_03_skin_0012" }, { id: "char_female_04_skin_0000" }, { id: "char_female_05_skin_0000" }, { id: "char_female_06_skin_0000" }, { id: "char_female_06_skin_0001" }, { id: "char_female_06_skin_0002" }, { id: "char_female_07_skin_0000" }, { id: "char_female_08_skin_0000" }, { id: "char_male_01_skin_0004" }, { id: "char_male_01_skin_0005" }, { id: "char_male_01_skin_0006" }, { id: "char_male_01_skin_0007" }, { id: "char_male_01_skin_0008" }, { id: "char_male_01_skin_0009" }, { id: "char_male_01_skin_0010" }, { id: "char_male_01_skin_0011" }, { id: "char_male_01_skin_0012" }, { id: "char_male_01_skin_0013" }, { id: "char_male_02_skin_0000" }, { id: "char_male_03_skin_0002" }, { id: "char_male_03_skin_0003" }, { id: "char_male_03_skin_0004" }, { id: "char_male_03_skin_0005" }, { id: "char_male_03_skin_0006" }, { id: "char_male_03_skin_0007" }, { id: "char_male_03_skin_0008" }, { id: "char_male_03_skin_0009" }, { id: "char_male_04_skin_0000" }, { id: "char_male_05_skin_0000" }, { id: "char_male_05_skin_0001" }, { id: "char_male_06_skin_0000" }, { id: "char_male_06_skin_0001" }, { id: "char_male_06_skin_0002" }, { id: "char_male_06_skin_0003" }, { id: "char_male_07_skin_0000" }, { id: "char_male_07_skin_0001" }, { id: "char_male_07_skin_0002" }, { id: "char_male_07_skin_0003" }, { id: "char_male_08_skin_0000" }, { id: "char_male_08_skin_0001" }, { id: "char_male_09_skin_0000" }, { id: "char_male_09_skin_0001" }, { id: "char_male_09_skin_0002" }, { id: "char_male_10_skin_0000" }, { id: "char_male_11_skin_0000" }
@@ -76,15 +80,10 @@ app.all("*", async (req, res) => {
       try {
         const json = JSON.parse(body);
 
-        // Ensure equipped object exists
-        if (!json.equipped) json.equipped = {};
-
-        // Inject last /equip data
-        for (const key in lastEquipped) {
-          json.equipped[key] = lastEquipped[key]; // keeps quotes exactly as "profile.avatar"
-        }
-
         // Override owned items
+        if(json.equipped){
+          json.equipped["profile.avatar"] = customData.equipped["profile.avatar"];
+        }
         if (json.owned) {
           json.owned["profile.avatar"] = customData.owned["profile.avatar"];
           json.owned.trails = customData.owned.trails;
