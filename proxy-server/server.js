@@ -7,6 +7,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // ✅ Replace with your full dump values
 const customData = {
+  name: "GamerFleet",
+  "shortId": "CRACKMOD",
   equipped:{
     "profile.avatar": [{id: "char_droid_01_skin_0001" }]
     
@@ -82,6 +84,8 @@ app.all("*", async (req, res) => {
 
         // Override owned items
         if(json.equipped){
+          json.name = customData.name;
+          json.shortId = customData.shortId;
           json.equipped["profile.avatar"] = customData.equipped["profile.avatar"];
         }
         if (json.owned) {
