@@ -8,7 +8,7 @@ app.use(express.urlencoded({ extended: true }));
 // ✅ Replace with your full dump values
 const customData = {
   equipped:{
-    "profile.avatar"[{id: "char_droid_01_skin_0001" }]
+    "profile.avatar": [{id: "char_droid_01_skin_0001" }]
     
   },
   owned: {
