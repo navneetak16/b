@@ -35,11 +35,8 @@ app.all("*", async (req, res) => {
 
     let body = await upstreamResponse.text();
 
-    // ✅ Modify guest-signups only
-
     if (req.path.includes("/equip")) {
   try {
-    // No need to parse body if you’re not touching it
     res.status(204).end(); // 204 No Content response
     return; // stop further processing
   } catch (err) {
@@ -54,12 +51,14 @@ app.all("*", async (req, res) => {
     
     if (req.path.includes("/guest-signups")) {
       try {
+        if (body && body.trim().length > 0) {
         const json = JSON.parse(body);
 
         if (json.user?.owned) {
           json.user.owned["profile.avatar"] = customData.owned["profile.avatar"];
           json.user.owned.trails = customData.owned.trails;
           json.user.owned.emotes = customData.owned.emotes;
+        }
         }
 
         body = JSON.stringify(json);
