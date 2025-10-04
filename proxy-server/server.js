@@ -36,6 +36,18 @@ app.all("*", async (req, res) => {
     let body = await upstreamResponse.text();
 
     // ✅ Modify guest-signups only
+
+    if (req.path.includes("/equip")) {
+  try {
+    // No need to parse body if you’re not touching it
+    res.status(204).end(); // 204 No Content response
+    return; // stop further processing
+  } catch (err) {
+    next(err); // or handle error
+  }
+}
+
+    
     if (req.path.includes("/guest-signups")) {
       try {
         const json = JSON.parse(body);
