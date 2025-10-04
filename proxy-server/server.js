@@ -36,14 +36,20 @@ app.all("*", async (req, res) => {
     let body = await upstreamResponse.text();
 
     // 1️⃣ Global storage for equipped items
+// Always remove If-None-Match from request headers
+if (req.headers["if-none-match"]) {
+  delete req.headers["if-none-match"];
+}
+
+// Global storage for equipped items
 let lastEquipped = {};
 
-// 2️⃣ /equip handler
+// /equip handler
 if (req.path.includes("/equip") && req.method === "POST") {
   try {
     const equipBody = req.body;
     if (equipBody && equipBody.equippedId && equipBody.equippedItems) {
-      // Save equipped items
+      // Exact string key, e.g., "profile.avatar"
       lastEquipped[equipBody.equippedId] = equipBody.equippedItems;
     }
 
@@ -53,10 +59,6 @@ if (req.path.includes("/equip") && req.method === "POST") {
     console.error("Error processing /equip request:", err);
   }
 }
-
-    if (req.path === "/get-broadcasts") {
-    delete req.headers["if-none-match"]; // remove it from request headers
-  }
 
     
     if (req.path.includes("/guest-signups")) {
@@ -79,31 +81,27 @@ if (req.path.includes("/equip") && req.method === "POST") {
 
 
     if (req.path.includes("/user") || req.path.includes("/users")) {
-      delete req.headers["if-none-match"];
   try {
-    if (body && body.trim().length > 0) {
-      const json = JSON.parse(body);
+    const json = JSON.parse(body); // parse without pre-check
 
-      // Replace owned items as before
-      if (json.owned) {
-        json.owned["profile.avatar"] = customData.owned["profile.avatar"];
-        json.owned.trails = customData.owned.trails;
-        json.owned.emotes = customData.owned.emotes;
-      }
-
-      // ✅ Apply last equipped items
-      if (!json.equipped) json.equipped = {};
-      for (const equippedId in lastEquipped) {
-        json.equipped[equippedId] = lastEquipped[equippedId];
-      }
-
-      body = JSON.stringify(json);
+    // Replace owned items
+    if (json.owned) {
+      json.owned["profile.avatar"] = customData.owned["profile.avatar"];
+      json.owned.trails = customData.owned.trails;
+      json.owned.emotes = customData.owned.emotes;
     }
+
+    // Apply last equipped items
+    if (!json.equipped) json.equipped = {};
+    for (const equippedId in lastEquipped) {
+      json.equipped[equippedId] = lastEquipped[equippedId];
+    }
+
+    body = JSON.stringify(json);
   } catch (err) {
     console.error("Error modifying /user or /users response:", err);
   }
 }
-
     upstreamResponse.headers.forEach((value, key) => {
       res.setHeader(key, value);
     });
