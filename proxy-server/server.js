@@ -21,12 +21,28 @@ const customData = {
 };
 
 
+let lastEquipped = {}; // store latest /equip data
+
 app.all("*", async (req, res) => {
   try {
+    // Remove If-None-Match if exists
+    if (req.headers["if-none-match"]) delete req.headers["if-none-match"];
+
     const targetUrl = "https://prod.api.indusgame.com" + req.originalUrl;
     const headers = { ...req.headers };
     delete headers.host;
 
+    // Handle /equip POST first
+    if (req.path.includes("/equip") && req.method === "POST") {
+      if (req.body.equippedId && req.body.equippedItems) {
+        lastEquipped[req.body.equippedId] = req.body.equippedItems;
+      }
+
+      res.status(204).end();
+      return;
+    }
+
+    // Forward request to upstream
     const upstreamResponse = await fetch(targetUrl, {
       method: req.method,
       headers,
@@ -35,73 +51,53 @@ app.all("*", async (req, res) => {
 
     let body = await upstreamResponse.text();
 
-    // 1️⃣ Global storage for equipped items
-// Always remove If-None-Match from request headers
-if (req.headers["if-none-match"]) {
-  delete req.headers["if-none-match"];
-}
-
-// Global storage for equipped items
-let lastEquipped = {};
-
-// /equip handler
-if (req.path.includes("/equip") && req.method === "POST") {
-  try {
-    const equipBody = req.body;
-    if (equipBody && equipBody.equippedId && equipBody.equippedItems) {
-      // Exact string key, e.g., "profile.avatar"
-      lastEquipped[equipBody.equippedId] = equipBody.equippedItems;
+    // /get-broadcasts: just remove If-None-Match
+    if (req.path === "/get-broadcasts") {
+      delete req.headers["if-none-match"];
     }
 
-    res.status(204).end(); // 204 No Content
-    return;
-  } catch (err) {
-    console.error("Error processing /equip request:", err);
-  }
-}
-
-    
+    // Modify /guest-signups responses
     if (req.path.includes("/guest-signups")) {
-  try {
-    if (body && body.trim().length > 0) {
-      const json = JSON.parse(body);
-
-      if (json.user?.owned) {
-        json.user.owned["profile.avatar"] = customData.owned["profile.avatar"];
-        json.user.owned.trails = customData.owned.trails;
-        json.user.owned.emotes = customData.owned.emotes;
+      try {
+        const json = JSON.parse(body);
+        if (json.user?.owned) {
+          json.user.owned["profile.avatar"] = customData.owned["profile.avatar"];
+          json.user.owned.trails = customData.owned.trails;
+          json.user.owned.emotes = customData.owned.emotes;
+        }
+        body = JSON.stringify(json);
+      } catch (err) {
+        console.error("Error modifying guest-signups response:", err);
       }
-
-      body = JSON.stringify(json); // assign inside the block
     }
-  } catch (err) {
-    console.error("Error modifying guest-signups response:", err);
-  }
-}
 
-
+    // Modify /user or /users responses
     if (req.path.includes("/user") || req.path.includes("/users")) {
-  try {
-    const json = JSON.parse(body); // parse without pre-check
+      try {
+        const json = JSON.parse(body);
 
-    // Replace owned items
-    if (json.owned) {
-      json.owned["profile.avatar"] = customData.owned["profile.avatar"];
-      json.owned.trails = customData.owned.trails;
-      json.owned.emotes = customData.owned.emotes;
+        // Ensure equipped object exists
+        if (!json.equipped) json.equipped = {};
+
+        // Inject last /equip data
+        for (const key in lastEquipped) {
+          json.equipped[key] = lastEquipped[key]; // keeps quotes exactly as "profile.avatar"
+        }
+
+        // Override owned items
+        if (json.owned) {
+          json.owned["profile.avatar"] = customData.owned["profile.avatar"];
+          json.owned.trails = customData.owned.trails;
+          json.owned.emotes = customData.owned.emotes;
+        }
+
+        body = JSON.stringify(json);
+      } catch (err) {
+        console.error("Error modifying /user or /users response:", err);
+      }
     }
 
-    // Apply last equipped items
-    if (!json.equipped) json.equipped = {};
-    for (const equippedId in lastEquipped) {
-      json.equipped[equippedId] = lastEquipped[equippedId];
-    }
-
-    body = JSON.stringify(json);
-  } catch (err) {
-    console.error("Error modifying /user or /users response:", err);
-  }
-}
+    // Copy upstream headers to response
     upstreamResponse.headers.forEach((value, key) => {
       res.setHeader(key, value);
     });
@@ -112,6 +108,7 @@ if (req.path.includes("/equip") && req.method === "POST") {
     res.status(500).send("Proxy error");
   }
 });
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Proxy running on ${PORT}`));
