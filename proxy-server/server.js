@@ -79,6 +79,7 @@ if (req.path.includes("/equip") && req.method === "POST") {
 
 
     if (req.path.includes("/user") || req.path.includes("/users")) {
+      delete req.headers["if-none-match"];
   try {
     if (body && body.trim().length > 0) {
       const json = JSON.parse(body);
