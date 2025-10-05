@@ -10,7 +10,10 @@ const customData = {
   name: "GamerFleet",
   "shortId": "CRACKMOD",
   equipped:{
-    "profile.avatar": [{id: "char_droid_01_skin_0001" }]
+    "profile.avatar": [{id: "char_droid_01_skin_0001" }],
+    "weapon.gun_mle_01": [{"id": "gun_mle_01_skin_0002" }],
+    "vehicle.veh_bike_01":[{"id": "veh_bike_01_skin_0053" }],
+    trails:[{"id": "trl_0064" }]
     
   },
   owned: {
@@ -87,6 +90,9 @@ app.all("*", async (req, res) => {
           json.name = customData.name;
           json.shortId = customData.shortId;
           json.equipped["profile.avatar"] = customData.equipped["profile.avatar"];
+          json.equipped["vehicle.veh_bike_01"] = customData.equipped["vehicle.veh_bike_01"];
+          json.equipped["weapon.gun_mle_01"] = customData.equipped["weapon.gun_mle_01"];
+          json.equipped.trails = customData.equipped.trails;
         }
         if (json.owned) {
           json.owned["profile.avatar"] = customData.owned["profile.avatar"];
