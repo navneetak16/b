@@ -332,20 +332,20 @@ app.all("*", async (req, res) => {
           json.owned["profile.avatar"] = customData.owned["profile.avatar"];
           json.owned.trails = customData.owned.trails;
           json.owned.emotes = customData.owned.emotes;
-          json.owned["weapon.gun_mle_01"] = customData.owned["weapon.gun_mle_01"];
-          json.owned["weapon.gun_sg_01"] = customData.owned["weapon.gun_sg_01"];
-          json.owned["weapon.gun_sg_02"] = customData.owned["weapon.gun_sg_02"];
-          json.owned["weapon.gun_hg_01"] = customData.owned["weapon.gun_hg_01"];
-          json.owned["weapon.gun_hg_02"] = customData.owned["weapon.gun_hg_02"];
-          json.owned["weapon.gun_smg_01"] = customData.owned["weapon.gun_smg_01"];
-          json.owned["weapon.gun_smg_02"] = customData.owned["weapon.gun_smg_02"];
+          //json.owned["weapon.gun_mle_01"] = customData.owned["weapon.gun_mle_01"];
+          //json.owned["weapon.gun_sg_01"] = customData.owned["weapon.gun_sg_01"];
+          //json.owned["weapon.gun_sg_02"] = customData.owned["weapon.gun_sg_02"];
+          //json.owned["weapon.gun_hg_01"] = customData.owned["weapon.gun_hg_01"];
+          //json.owned["weapon.gun_hg_02"] = customData.owned["weapon.gun_hg_02"];
+          //json.owned["weapon.gun_smg_01"] = customData.owned["weapon.gun_smg_01"];
+         // json.owned["weapon.gun_smg_02"] = customData.owned["weapon.gun_smg_02"];
           json.owned["weapon.gun_ar_01"] = customData.owned["weapon.gun_ar_01"];
-          json.owned["weapon.gun_ar_02"] = customData.owned["weapon.gun_ar_02"];
-          json.owned["weapon.gun_ar_03"] = customData.owned["weapon.gun_ar_03"];
-          json.owned["weapon.gun_lmg_01"] = customData.owned["weapon.gun_lmg_01"];
-          json.owned["weapon.gun_lmg_02"] = customData.owned["weapon.gun_lmg_02"];
-          json.owned["weapon.gun_sr_01"] = customData.owned["weapon.gun_sr_01"];
-          json.owned["weapon.gun_sr_02"] = customData.owned["weapon.gun_sr_02"];
+          //json.owned["weapon.gun_ar_02"] = customData.owned["weapon.gun_ar_02"];
+          //json.owned["weapon.gun_ar_03"] = customData.owned["weapon.gun_ar_03"];
+          //json.owned["weapon.gun_lmg_01"] = customData.owned["weapon.gun_lmg_01"];
+          //json.owned["weapon.gun_lmg_02"] = customData.owned["weapon.gun_lmg_02"];
+          //json.owned["weapon.gun_sr_01"] = customData.owned["weapon.gun_sr_01"];
+          //json.owned["weapon.gun_sr_02"] = customData.owned["weapon.gun_sr_02"];
 
         }
 
