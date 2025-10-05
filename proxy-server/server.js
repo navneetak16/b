@@ -7,10 +7,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // ✅ Replace with your full dump values
 const customData = {
-  name: "GamerFleet",
-  "shortId": "CRACKMOD",
+  name: "KunalStarYT",
+  "shortId": "xy2eagxz",
+  levelInfo: {"id": 19},
   equipped:{
-    "profile.avatar": [{id: "char_droid_01_skin_0001" }],
+    "profile.avatar": [{id: "char_droid_01_skin_0002" }],
     "vehicle.veh_bike_01":[{"id": "veh_bike_01_skin_0053" }],
     trails:[{"id": "trl_0064" }],
     "slotwheel_slot_0001": [{"id": "emt_0048"}],
@@ -313,6 +314,7 @@ app.all("*", async (req, res) => {
           json.equipped["slotwheel_slot_0007"] = customData.equipped["slotwheel_slot_0007"];
           json.equipped["slotwheel_slot_0008"] = customData.equipped["slotwheel_slot_0008"];
           json.equipped["slotwheel_slot_0009"] = customData.equipped["slotwheel_slot_0009"];
+          json.levelInfo.id = customData.levelInfo.id;
           json.equipped["weapon.gun_mle_01"] = customData.equipped["weapon.gun_mle_01"];
           json.equipped["weapon.gun_sg_01"] = customData.equipped["weapon.gun_sg_01"];
           json.equipped["weapon.gun_sg_02"] = customData.equipped["weapon.gun_sg_02"];
