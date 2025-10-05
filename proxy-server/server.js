@@ -11,10 +11,35 @@ const customData = {
   "shortId": "CRACKMOD",
   equipped:{
     "profile.avatar": [{id: "char_droid_01_skin_0001" }],
-    "weapon.gun_mle_01": [{"id": "gun_mle_01_skin_0002" }],
     "vehicle.veh_bike_01":[{"id": "veh_bike_01_skin_0053" }],
-    trails:[{"id": "trl_0064" }]
+    trails:[{"id": "trl_0064" }],
+    "slotwheel_slot_0001": [{"id": "emt_0048"}],
+    "slotwheel_slot_0002": [{"id": "emt_0017"}],
+    "slotwheel_slot_0003": [{"id": "emt_0057"}],
+    "slotwheel_slot_0004": [{"id": "emt_0061"}],
+    "slotwheel_slot_0005": [{"id": "emt_0062"}],
+    "slotwheel_slot_0006": [{"id": "emt_0065"}],
+    "slotwheel_slot_0007": [{"id": "emt_0095"}],
+    "slotwheel_slot_0008": [{"id": "emt_0041"}],
+    "slotwheel_slot_0009": [{"id": "stk_0041"}],
+    "weapon.gun_mle_01": [{"id": "gun_mle_01_skin_0002" }],
+    "weapon.gun_sg_01": [{"id": "gun_sg_01_skin_0019" }],
+    "weapon.gun_sg_02": [{"id": "gun_sg_02_skin_0007" }],
+    "weapon.gun_hg_01": [{"id": "gun_hg_01_skin_0008" }],
+    "weapon.gun_hg_02": [{"id": "gun_hg_02_skin_0005" }],
+    "weapon.gun_smg_01": [{"id": "gun_smg_01_skin_0006" }],
+    "weapon.gun_smg_02": [{"id": "gun_smg_02_skin_0007" }],
+    "weapon.gun_ar_01": [{"id": "gun_ar_01_skin_0010" }],
+    "weapon.gun_ar_02": [{"id": "gun_ar_02_skin_0005" }],
+    "weapon.gun_ar_03": [{"id": "gun_ar_03_skin_0001" }],
+    "weapon.gun_lmg_01": [{"id": "gun_lmg_01_skin_0013" }],
+    "weapon.gun_lmg_02": [{"id": "gun_lmg_02_skin_0002" }],
+    "weapon.gun_sr_01": [{"id": "gun_sr_01_skin_0009" }],
+    "weapon.gun_sr_02": [{"id": "gun_sr_02_skin_0004" }]
     
+    
+
+
   },
   owned: {
     "profile.avatar": [
@@ -93,6 +118,29 @@ app.all("*", async (req, res) => {
           json.equipped["vehicle.veh_bike_01"] = customData.equipped["vehicle.veh_bike_01"];
           json.equipped["weapon.gun_mle_01"] = customData.equipped["weapon.gun_mle_01"];
           json.equipped.trails = customData.equipped.trails;
+          json.equipped["slotwheel_slot_0001"] = customData.equipped["slotwheel_slot_0001"];
+          json.equipped["slotwheel_slot_0002"] = customData.equipped["slotwheel_slot_0002"];
+          json.equipped["slotwheel_slot_0003"] = customData.equipped["slotwheel_slot_0003"];
+          json.equipped["slotwheel_slot_0004"] = customData.equipped["slotwheel_slot_0004"];
+          json.equipped["slotwheel_slot_0005"] = customData.equipped["slotwheel_slot_0005"];
+          json.equipped["slotwheel_slot_0006"] = customData.equipped["slotwheel_slot_0006"];
+          json.equipped["slotwheel_slot_0007"] = customData.equipped["slotwheel_slot_0007"];
+          json.equipped["slotwheel_slot_0008"] = customData.equipped["slotwheel_slot_0008"];
+          json.equipped["slotwheel_slot_0009"] = customData.equipped["slotwheel_slot_0009"];
+          json.equipped["weapon.gun_mle_01"] = customData.equipped["weapon.gun_mle_01"];
+          json.equipped["weapon.gun_sg_01"] = customData.equipped["weapon.gun_sg_01"];
+          json.equipped["weapon.gun_sg_02"] = customData.equipped["weapon.gun_sg_02"];
+          json.equipped["weapon.gun_hg_01"] = customData.equipped["weapon.gun_hg_01"];
+          json.equipped["weapon.gun_hg_02"] = customData.equipped["weapon.gun_hg_02"];
+          json.equipped["weapon.gun_smg_01"] = customData.equipped["weapon.gun_smg_01"];
+          json.equipped["weapon.gun_smg_02"] = customData.equipped["weapon.gun_smg_02"];
+          json.equipped["weapon.gun_ar_01"] = customData.equipped["weapon.gun_ar_01"];
+          json.equipped["weapon.gun_ar_02"] = customData.equipped["weapon.gun_ar_02"];
+          json.equipped["weapon.gun_ar_03"] = customData.equipped["weapon.gun_ar_03"];
+          json.equipped["weapon.gun_lmg_01"] = customData.equipped["weapon.gun_lmg_01"];
+          json.equipped["weapon.gun_lmg_02"] = customData.equipped["weapon.gun_lmg_02"];
+          json.equipped["weapon.gun_sr_01"] = customData.equipped["weapon.gun_sr_01"];
+          json.equipped["weapon.gun_sr_02"] = customData.equipped["weapon.gun_sr_02"];
         }
         if (json.owned) {
           json.owned["profile.avatar"] = customData.owned["profile.avatar"];
