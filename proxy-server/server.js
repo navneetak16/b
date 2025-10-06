@@ -1,7 +1,15 @@
 import express from "express";
 import fetch from "node-fetch";
+import { Pool } from "pg";
+import path from "path";
+import { fileURLToPath } from "url";
+
 
 const app = express();
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -238,6 +246,57 @@ const customData = {
   }
 };
 
+// Resolve current directory for serving panel.html
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static panel page
+app.get("/panel", async (req, res) => {
+  const { shortId } = req.query;
+  let existingConfig = {};
+  if (shortId) {
+    const result = await pool.query("SELECT config FROM user_configs WHERE short_id=$1", [shortId]);
+    if (result.rows.length) existingConfig = result.rows[0].config;
+  }
+  res.send(`
+    <html>
+      <head>
+        <title>Customize JSON (${shortId || "new"})</title>
+      </head>
+      <body>
+        <h2>Editing configuration for shortId: ${shortId || "(none)"}</h2>
+        <textarea id="config" style="width:100%;height:400px;">${JSON.stringify(existingConfig, null, 2)}</textarea>
+        <br>
+        <button onclick="save()">💾 Save</button>
+        <script>
+          async function save(){
+            const data = JSON.parse(document.getElementById('config').value);
+            await fetch('/save', {
+              method:'POST',
+              headers:{'Content-Type':'application/json'},
+              body:JSON.stringify({ shortId:'${shortId}', config:data })
+            });
+            alert('Saved successfully!');
+          }
+        </script>
+      </body>
+    </html>
+  `);
+});
+
+// Save user customization
+app.post("/save", async (req, res) => {
+  const { shortId, config } = req.body;
+  if (!shortId) return res.status(400).json({ error: "shortId required" });
+  await pool.query(
+    `INSERT INTO user_configs (short_id, config)
+     VALUES ($1, $2)
+     ON CONFLICT (short_id) DO UPDATE SET config = EXCLUDED.config`,
+    [shortId, config]
+  );
+  res.json({ success: true });
+});
+
 
 let lastEquipped = {}; // store latest /equip data
 
@@ -290,70 +349,42 @@ app.all("*", async (req, res) => {
     }
 
     // Modify /user or /users responses
-    if (req.path.includes("/user")) {
-      try {
-        const json = JSON.parse(body);
+    // Modify /user or /users responses
+if (req.path.includes("/user")) {
+  try {
+    const json = JSON.parse(body);
 
-        // Override owned items
-        if(json.equipped){
-          json.name = customData.name;
-          json.shortId = customData.shortId;
-          json.group = customData.group;
-          json.equipped["profile.avatar"] = customData.equipped["profile.avatar"];
-          json.equipped["vehicle.veh_bike_01"] = customData.equipped["vehicle.veh_bike_01"];
-          json.equipped["weapon.gun_mle_01"] = customData.equipped["weapon.gun_mle_01"];
-          json.equipped.trails = customData.equipped.trails;
-          json.equipped["slotwheel_slot_0001"] = customData.equipped["slotwheel_slot_0001"];
-          json.equipped["slotwheel_slot_0002"] = customData.equipped["slotwheel_slot_0002"];
-          json.equipped["slotwheel_slot_0003"] = customData.equipped["slotwheel_slot_0003"];
-          json.equipped["slotwheel_slot_0004"] = customData.equipped["slotwheel_slot_0004"];
-          json.equipped["slotwheel_slot_0005"] = customData.equipped["slotwheel_slot_0005"];
-          json.equipped["slotwheel_slot_0006"] = customData.equipped["slotwheel_slot_0006"];
-          json.equipped["slotwheel_slot_0007"] = customData.equipped["slotwheel_slot_0007"];
-          json.equipped["slotwheel_slot_0008"] = customData.equipped["slotwheel_slot_0008"];
-          json.equipped["slotwheel_slot_0009"] = customData.equipped["slotwheel_slot_0009"];
-          json.levelInfo.id = customData.levelInfo.id;
-          json.equipped["weapon.gun_mle_01"] = customData.equipped["weapon.gun_mle_01"];
-          json.equipped["weapon.gun_sg_01"] = customData.equipped["weapon.gun_sg_01"];
-          json.equipped["weapon.gun_sg_02"] = customData.equipped["weapon.gun_sg_02"];
-          json.equipped["weapon.gun_hg_01"] = customData.equipped["weapon.gun_hg_01"];
-          json.equipped["weapon.gun_hg_02"] = customData.equipped["weapon.gun_hg_02"];
-          json.equipped["weapon.gun_smg_01"] = customData.equipped["weapon.gun_smg_01"];
-          json.equipped["weapon.gun_smg_02"] = customData.equipped["weapon.gun_smg_02"];
-          json.equipped["weapon.gun_ar_01"] = customData.equipped["weapon.gun_ar_01"];
-          json.equipped["weapon.gun_ar_02"] = customData.equipped["weapon.gun_ar_02"];
-          json.equipped["weapon.gun_ar_03"] = customData.equipped["weapon.gun_ar_03"];
-          json.equipped["weapon.gun_lmg_01"] = customData.equipped["weapon.gun_lmg_01"];
-          json.equipped["weapon.gun_lmg_02"] = customData.equipped["weapon.gun_lmg_02"];
-          json.equipped["weapon.gun_sr_01"] = customData.equipped["weapon.gun_sr_01"];
-          json.equipped["weapon.gun_sr_02"] = customData.equipped["weapon.gun_sr_02"];
-        }
-        if (json.owned) {
-          json.owned["profile.avatar"] = customData.owned["profile.avatar"];
-          json.owned.trails = customData.owned.trails;
-          json.owned.emotes = customData.owned.emotes;
-          //json.owned["weapon.gun_mle_01"] = customData.owned["weapon.gun_mle_01"];
-          //json.owned["weapon.gun_sg_01"] = customData.owned["weapon.gun_sg_01"];
-          //json.owned["weapon.gun_sg_02"] = customData.owned["weapon.gun_sg_02"];
-          //json.owned["weapon.gun_hg_01"] = customData.owned["weapon.gun_hg_01"];
-          //json.owned["weapon.gun_hg_02"] = customData.owned["weapon.gun_hg_02"];
-          //json.owned["weapon.gun_smg_01"] = customData.owned["weapon.gun_smg_01"];
-         // json.owned["weapon.gun_smg_02"] = customData.owned["weapon.gun_smg_02"];
-          //json.owned["weapon.gun_ar_01"] = customData.owned["weapon.gun_ar_01"];
-          //json.owned["weapon.gun_ar_02"] = customData.owned["weapon.gun_ar_02"];
-          //json.owned["weapon.gun_ar_03"] = customData.owned["weapon.gun_ar_03"];
-          //json.owned["weapon.gun_lmg_01"] = customData.owned["weapon.gun_lmg_01"];
-          //json.owned["weapon.gun_lmg_02"] = customData.owned["weapon.gun_lmg_02"];
-          //json.owned["weapon.gun_sr_01"] = customData.owned["weapon.gun_sr_01"];
-          //json.owned["weapon.gun_sr_02"] = customData.owned["weapon.gun_sr_02"];
+    // Identify shortId from the response (if present)
+    const shortId = json.shortId || json.user?.shortId || null;
 
-        }
-
-        body = JSON.stringify(json);
-      } catch (err) {
-        console.error("Error modifying /user or /users response:", err);
-      }
+    // Get user-specific config if exists
+    let userConfig = null;
+    if (shortId) {
+      const result = await pool.query("SELECT config FROM user_configs WHERE short_id=$1", [shortId]);
+      if (result.rows.length) userConfig = result.rows[0].config;
     }
+
+    // Merge base customData with DB override
+    const activeConfig = userConfig || customData;
+
+    if (json.equipped) {
+      json.name = activeConfig.name;
+      json.shortId = activeConfig.shortId;
+      json.group = activeConfig.group;
+      json.levelInfo.id = activeConfig.levelInfo.id;
+      json.equipped = { ...json.equipped, ...activeConfig.equipped };
+    }
+
+    if (json.owned) {
+      json.owned = { ...json.owned, ...activeConfig.owned };
+    }
+
+    body = JSON.stringify(json);
+  } catch (err) {
+    console.error("Error modifying /user or /users response:", err);
+  }
+}
+
 
     // Copy upstream headers to response
     upstreamResponse.headers.forEach((value, key) => {
