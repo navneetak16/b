@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Replace with your full dump values
+// ✅ Replace
 const customData = {
   name: "PiyushJoshi",
   "group": "admin",
