@@ -7,8 +7,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // ✅ Replace with your full dump values
 const customData = {
-  name: "KunalStarYT",
-  "shortId": "xy2eagxz",
+  name: "*******************************************************************************************************************************************************",
+  "shortId": "crackmod",
   levelInfo: {"id": 19},
   equipped:{
     "profile.avatar": [{id: "char_droid_01_skin_0002" }],
