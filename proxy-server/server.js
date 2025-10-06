@@ -7,7 +7,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // ✅ Replace with your full dump values
 const customData = {
-  name: "<font color='#FFAA00'>Mythwalker</font>",
+  name: "★彡[ᴀᴍʙᴀɴɪ]彡★",
+  "group": "tester",
   "shortId": "crackmod",
   levelInfo: {"id": 19},
   equipped:{
@@ -301,6 +302,7 @@ app.all("*", async (req, res) => {
         if(json.equipped){
           json.name = customData.name;
           json.shortId = customData.shortId;
+          json.group = customData.group;
           json.equipped["profile.avatar"] = customData.equipped["profile.avatar"];
           json.equipped["vehicle.veh_bike_01"] = customData.equipped["vehicle.veh_bike_01"];
           json.equipped["weapon.gun_mle_01"] = customData.equipped["weapon.gun_mle_01"];
