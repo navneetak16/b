@@ -7,8 +7,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // ✅ Replace with your full dump values
 const customData = {
-  name: "★彡[ᴀᴍʙᴀɴɪ]彡★",
-  "group": "tester",
+  name: "<div><span style=\"color: #ff0000\">★</span><span style=\"color: #ff1500\">彡</span><span style=\"color: #ff2a00\">[</span><span style=\"color: #ff4000\">ᴀ</span><span style=\"color: #ff5500\">ᴍ</span><span style=\"color: #ff6a00\">ʙ</span><span style=\"color: #ff7f00\">ᴀ</span><span style=\"color: #ff9900\">ɴ</span><span style=\"color: #ffb200\">ɪ</span><span style=\"color: #ffcc00\">]</span><span style=\"color: #ffe500\">彡</span><span style=\"color: #ffff00\">★</span></div>",
+  "group": "admin",
   "shortId": "crackmod",
   levelInfo: {"id": 19},
   equipped:{
