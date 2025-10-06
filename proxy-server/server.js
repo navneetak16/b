@@ -7,9 +7,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // ✅ Replace with your full dump values
 const customData = {
-  name: "<div><span style=\"color: #ff0000\">★</span><span style=\"color: #ff1500\">彡</span><span style=\"color: #ff2a00\">[</span><span style=\"color: #ff4000\">ᴀ</span><span style=\"color: #ff5500\">ᴍ</span><span style=\"color: #ff6a00\">ʙ</span><span style=\"color: #ff7f00\">ᴀ</span><span style=\"color: #ff9900\">ɴ</span><span style=\"color: #ffb200\">ɪ</span><span style=\"color: #ffcc00\">]</span><span style=\"color: #ffe500\">彡</span><span style=\"color: #ffff00\">★</span></div>",
+  name: "PiyushJoshi",
   "group": "admin",
-  "shortId": "crackmod",
+  "shortId": "ll5natt6",
   levelInfo: {"id": 19},
   equipped:{
     "profile.avatar": [{id: "char_droid_01_skin_0002" }],
@@ -38,10 +38,6 @@ const customData = {
     "weapon.gun_lmg_02": [{"id": "gun_lmg_02_skin_0002" }],
     "weapon.gun_sr_01": [{"id": "gun_sr_01_skin_0009" }],
     "weapon.gun_sr_02": [{"id": "gun_sr_02_skin_0004" }]
-    
-    
-
-
   },
 
   owned: {
