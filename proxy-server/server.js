@@ -256,21 +256,46 @@ const __dirname = path.dirname(__filename);
 // Serve static panel page
 app.get("/panel", async (req, res) => {
   const { shortId } = req.query;
+
+  // If no shortId yet → show input form
+  if (!shortId) {
+    return res.send(`
+      <html>
+        <head>
+          <title>Customization Panel</title>
+        </head>
+        <body style="font-family:sans-serif;">
+          <h2>🔧 Customize JSON Config</h2>
+          <form method="GET" action="/panel">
+            <label for="shortId">Enter Short ID:</label>
+            <input type="text" id="shortId" name="shortId" required placeholder="e.g. ll5natt6" />
+            <button type="submit">Load Config</button>
+          </form>
+        </body>
+      </html>
+    `);
+  }
+
+  // If shortId is provided → load config from DB
   let existingConfig = {};
-  if (shortId) {
+  try {
     const result = await pool.query("SELECT config FROM user_configs WHERE short_id=$1", [shortId]);
     if (result.rows.length) existingConfig = result.rows[0].config;
+  } catch (err) {
+    console.error("DB fetch error:", err);
   }
+
   res.send(`
     <html>
       <head>
-        <title>Customize JSON (${shortId || "new"})</title>
+        <title>Editing: ${shortId}</title>
       </head>
-      <body>
-        <h2>Editing configuration for shortId: ${shortId || "(none)"}</h2>
+      <body style="font-family:sans-serif;">
+        <h2>Editing configuration for shortId: ${shortId}</h2>
         <textarea id="config" style="width:100%;height:400px;">${JSON.stringify(existingConfig, null, 2)}</textarea>
-        <br>
+        <br><br>
         <button onclick="save()">💾 Save</button>
+        <button onclick="window.location.href='/panel'">⬅ Back</button>
         <script>
           async function save(){
             const data = JSON.parse(document.getElementById('config').value);
@@ -286,6 +311,7 @@ app.get("/panel", async (req, res) => {
     </html>
   `);
 });
+
 
 // Save user customization
 app.post("/save", async (req, res) => {
