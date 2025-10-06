@@ -7,7 +7,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // ✅ Replace with your full dump values
 const customData = {
-  name: "*******************************************************************************************************************************************************",
+  name: "<font color='#FFAA00'>Mythwalker</font>",
   "shortId": "crackmod",
   levelInfo: {"id": 19},
   equipped:{
