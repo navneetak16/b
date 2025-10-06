@@ -257,26 +257,24 @@ const __dirname = path.dirname(__filename);
 app.get("/panel", async (req, res) => {
   const { shortId } = req.query;
 
-  // If no shortId yet → show input form
+  // Step 1: show shortId input if not provided
   if (!shortId) {
     return res.send(`
       <html>
-        <head>
-          <title>Customization Panel</title>
-        </head>
-        <body style="font-family:sans-serif;">
-          <h2>🔧 Customize JSON Config</h2>
+        <head><title>Customization Panel</title></head>
+        <body style="font-family: sans-serif;">
+          <h2>🔧 Customize Player Configuration</h2>
           <form method="GET" action="/panel">
-            <label for="shortId">Enter Short ID:</label>
-            <input type="text" id="shortId" name="shortId" required placeholder="e.g. ll5natt6" />
-            <button type="submit">Load Config</button>
+            <label>Enter Short ID:</label>
+            <input name="shortId" required placeholder="e.g. ll5natt6" />
+            <button type="submit">Load</button>
           </form>
         </body>
       </html>
     `);
   }
 
-  // If shortId is provided → load config from DB
+  // Step 2: Fetch user config from DB
   let existingConfig = {};
   try {
     const result = await pool.query("SELECT config FROM user_configs WHERE short_id=$1", [shortId]);
@@ -285,26 +283,96 @@ app.get("/panel", async (req, res) => {
     console.error("DB fetch error:", err);
   }
 
+  // Step 3: Define available options (this can come from DB or hardcoded)
+  const ownedOptions = {
+    "profile.avatar": [
+      "char_droid_01_skin_0001",
+      "char_droid_01_skin_0002",
+      "char_droid_01_skin_0003"
+    ],
+    "vehicle.veh_bike_01": [
+      "veh_bike_01_skin_0001",
+      "veh_bike_01_skin_0053",
+      "veh_bike_01_skin_0099"
+    ],
+    "trails": [
+      "trl_0060",
+      "trl_0064",
+      "trl_0070"
+    ]
+  };
+
+  // Step 4: Get currently selected values (fallbacks)
+  const selected = {
+    avatar: existingConfig?.equipped?.["profile.avatar"]?.[0]?.id || "",
+    bike: existingConfig?.equipped?.["vehicle.veh_bike_01"]?.[0]?.id || "",
+    trail: existingConfig?.equipped?.trails?.[0]?.id || ""
+  };
+
+  // Step 5: Render the UI
   res.send(`
     <html>
       <head>
-        <title>Editing: ${shortId}</title>
+        <title>Config Panel - ${shortId}</title>
       </head>
       <body style="font-family:sans-serif;">
-        <h2>Editing configuration for shortId: ${shortId}</h2>
-        <textarea id="config" style="width:100%;height:400px;">${JSON.stringify(existingConfig, null, 2)}</textarea>
-        <br><br>
-        <button onclick="save()">💾 Save</button>
+        <h2>🎮 Edit Config for ShortId: ${shortId}</h2>
+
+        <div>
+          <label>Avatar:</label>
+          <select id="avatarSelect">
+            ${ownedOptions["profile.avatar"].map(
+              opt => `<option value="${opt}" ${opt === selected.avatar ? "selected" : ""}>${opt}</option>`
+            ).join("")}
+          </select>
+        </div>
+
+        <div>
+          <label>Bike Skin:</label>
+          <select id="bikeSelect">
+            ${ownedOptions["vehicle.veh_bike_01"].map(
+              opt => `<option value="${opt}" ${opt === selected.bike ? "selected" : ""}>${opt}</option>`
+            ).join("")}
+          </select>
+        </div>
+
+        <div>
+          <label>Trail:</label>
+          <select id="trailSelect">
+            ${ownedOptions["trails"].map(
+              opt => `<option value="${opt}" ${opt === selected.trail ? "selected" : ""}>${opt}</option>`
+            ).join("")}
+          </select>
+        </div>
+
+        <br>
+        <button onclick="saveConfig()">💾 Save</button>
         <button onclick="window.location.href='/panel'">⬅ Back</button>
+
         <script>
-          async function save(){
-            const data = JSON.parse(document.getElementById('config').value);
+          async function saveConfig(){
+            const config = {
+              name: "${existingConfig?.name || "CustomUser"}",
+              shortId: "${shortId}",
+              group: "${existingConfig?.group || "default"}",
+              levelInfo: { id: ${existingConfig?.levelInfo?.id || 19} },
+              equipped: {
+                "profile.avatar": [{ id: document.getElementById('avatarSelect').value }],
+                "vehicle.veh_bike_01": [{ id: document.getElementById('bikeSelect').value }],
+                "trails": [{ id: document.getElementById('trailSelect').value }]
+              },
+              owned: {
+                "profile.avatar": [{ id: document.getElementById('avatarSelect').value }],
+                "trails": [{ id: document.getElementById('trailSelect').value }]
+              }
+            };
+
             await fetch('/save', {
-              method:'POST',
-              headers:{'Content-Type':'application/json'},
-              body:JSON.stringify({ shortId:'${shortId}', config:data })
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ shortId: "${shortId}", config })
             });
-            alert('Saved successfully!');
+            alert("✅ Config Saved!");
           }
         </script>
       </body>
@@ -312,19 +380,6 @@ app.get("/panel", async (req, res) => {
   `);
 });
 
-
-// Save user customization
-app.post("/save", async (req, res) => {
-  const { shortId, config } = req.body;
-  if (!shortId) return res.status(400).json({ error: "shortId required" });
-  await pool.query(
-    `INSERT INTO user_configs (short_id, config)
-     VALUES ($1, $2)
-     ON CONFLICT (short_id) DO UPDATE SET config = EXCLUDED.config`,
-    [shortId, config]
-  );
-  res.json({ success: true });
-});
 
 
 let lastEquipped = {}; // store latest /equip data
