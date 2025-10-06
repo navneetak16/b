@@ -8,7 +8,10 @@ import { fileURLToPath } from "url";
 const app = express();
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
+  ssl: {
+    require: true,
+    rejectUnauthorized: false
+  }
 });
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
