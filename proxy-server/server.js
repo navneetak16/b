@@ -9,10 +9,17 @@ const app = express();
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
-    require: true,
-    rejectUnauthorized: false
+    require: true,          // force SSL
+    rejectUnauthorized: false // allow self-signed cert
   }
 });
+pool.connect()
+  .then(client => {
+    console.log("✅ Connected to PostgreSQL database");
+    client.release();
+  })
+  .catch(err => console.error("❌ Database connection error:", err));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
