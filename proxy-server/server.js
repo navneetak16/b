@@ -293,7 +293,6 @@ app.all("*", async (req, res) => {
 
         // Override owned items
         if(json.equipped){
-          json.id = customData.id;
           json.name = customData.name;
           json.shortId = customData.shortId;
           json.group = customData.group;
