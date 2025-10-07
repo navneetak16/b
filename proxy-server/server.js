@@ -10,8 +10,8 @@ const customData = {
   name: "PiyushJoshi",
   "group": "admin",
   "shortId": "ll5natt6",
-  levelInfo: {"id": -1},
-  level: -1,
+  levelInfo: {"id": 10000},
+  level: 10000,
   identities: [{ "type": "guest", "id": "34361252775602123902264349160523", "createTime": "2025-08-14T05:57:28.274Z"}],
   equipped:{
     "profile.avatar": [{id: "char_droid_01_skin_0002" }],
