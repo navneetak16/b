@@ -7,12 +7,13 @@ app.use(express.urlencoded({ extended: true }));
 
 // ✅ Replace
 const customData = {
+  id: 123,
   name: "PiyushJoshi",
   "group": "admin",
   "shortId": "ll5natt6",
   levelInfo: {"id": 10000},
   level: 10000,
-  identities: [{ "type": "guest", "id": "14361252775602123902264349160523", "createTime": "2025-08-14T05:57:28.274Z"}],
+  identities: [{ "type": "guest", "id": "Bevkoof kahike", "createTime": "2025-08-14T05:57:28.274Z"}],
   progressions: [{"userId": 3902264349160523, "progressionId": "credit-points", "type": 2, "stats": "{ \"CP\" : 0 }", "currentLevelIndex": 0},
         { "userId": 3902264349160523,  "progressionId": "ranked-s3-stage3", "type": 1, "stats": "{ \"drr\" : 0 }", "currentLevelIndex": -1 }],
    equipped:{
@@ -292,6 +293,7 @@ app.all("*", async (req, res) => {
 
         // Override owned items
         if(json.equipped){
+          json.id = customData.id;
           json.name = customData.name;
           json.shortId = customData.shortId;
           json.group = customData.group;
