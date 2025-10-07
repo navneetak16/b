@@ -10,7 +10,8 @@ const customData = {
   name: "PiyushJoshi",
   "group": "admin",
   "shortId": "ll5natt6",
-  levelInfo: {"id": 19},
+  levelInfo: {"id": -1},
+  identities: [{ "type": "guest", "id": "34361252775602123902264349160523", "createTime": "2025-08-14T05:57:28.274Z"}],
   equipped:{
     "profile.avatar": [{id: "char_droid_01_skin_0002" }],
     "vehicle.veh_bike_01":[{"id": "veh_bike_01_skin_0053" }],
@@ -251,14 +252,6 @@ app.all("*", async (req, res) => {
     delete headers.host;
 
     // Handle /equip POST first
-    if (req.path.includes("/equip") && req.method === "POST") {
-      if (req.body.equippedId && req.body.equippedItems) {
-        lastEquipped[req.body.equippedId] = req.body.equippedItems;
-      }
-
-      res.status(204).end();
-      return;
-    }
 
     // Forward request to upstream
     const upstreamResponse = await fetch(targetUrl, {
@@ -299,6 +292,17 @@ app.all("*", async (req, res) => {
           json.name = customData.name;
           json.shortId = customData.shortId;
           json.group = customData.group;
+          if (json.identities && json.identities.length > 0 && customData.identities) {
+  json.identities = json.identities.map((identity, index) => {
+    if (customData.identities[index]) {
+      return {
+        ...identity,          // keep all existing fields
+        id: customData.identities[index].id // only change id
+      };
+    }
+    return identity; // no change if customData doesn't have this index
+  });
+}
           json.equipped["profile.avatar"] = customData.equipped["profile.avatar"];
           json.equipped["vehicle.veh_bike_01"] = customData.equipped["vehicle.veh_bike_01"];
           json.equipped["weapon.gun_mle_01"] = customData.equipped["weapon.gun_mle_01"];
