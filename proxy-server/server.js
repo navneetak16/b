@@ -12,7 +12,7 @@ const customData = {
   "group": "admin",
   "shortId": "ll5natt6",
   levelInfo: {"id": 149},
-  level: 10000,
+  level: 149,
   identities: [{ "type": "guest", "id": "Bevkoof kahike", "createTime": "2025-08-14T05:57:28.274Z"}],
   progressions: [{"userId": 3902264349160523, "progressionId": "credit-points", "type": 2, "stats": "{ \"CP\" : 0 }", "currentLevelIndex": 0},
         { "userId": 3902264349160523,  "progressionId": "ranked-s3-stage3", "type": 1, "stats": "{ \"drr\" : 0 }", "currentLevelIndex": -1 }],
