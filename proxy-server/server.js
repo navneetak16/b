@@ -89,9 +89,9 @@ const customData = {
         "gun_ar_02_skin_0008",
         "gun_ar_02_skin_0009"
     ],
-    "weapon.gun_ar_03": [{
-        "id": "gun_ar_03_skin_0000"},
-        "id": "gun_ar_03_skin_0001"}
+    "weapon.gun_ar_03": [
+      {"id": "gun_ar_03_skin_0000"},
+      {"id": "gun_ar_03_skin_0001"}
     ],
     "weapon.gun_smg_01": [
         "gun_smg_01_skin_0000",
