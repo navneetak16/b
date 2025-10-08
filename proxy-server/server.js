@@ -55,192 +55,192 @@ const customData = {
     emotes: [
      { id: "emt_0001" }, { id: "emt_0002" }, { id: "emt_0003" }, { id: "emt_0004" }, { id: "emt_0005" }, { id: "emt_0006" }, { id: "emt_0007" }, { id: "emt_0008" }, { id: "emt_0009" }, { id: "emt_0010" }, { id: "emt_0011" }, { id: "emt_0012" }, { id: "emt_0013" }, { id: "emt_0014" }, { id: "emt_0015" }, { id: "emt_0016" }, { id: "emt_0017" }, { id: "emt_0018" }, { id: "emt_0019" }, { id: "emt_0020" }, { id: "emt_0021" }, { id: "emt_0022" }, { id: "emt_0023" }, { id: "emt_0024" }, { id: "emt_0025" }, { id: "emt_0026" }, { id: "emt_0027" }, { id: "emt_0028" }, { id: "emt_0029" }, { id: "emt_0030" }, { id: "emt_0031" }, { id: "emt_0032" }, { id: "emt_0033" }, { id: "emt_0034" }, { id: "emt_0035" }, { id: "emt_0036" }, { id: "emt_0037" }, { id: "emt_0038" }, { id: "emt_0039" }, { id: "emt_0040" }, { id: "emt_0041" }, { id: "emt_0042" }, { id: "emt_0043" }, { id: "emt_0044" }, { id: "emt_0045" }, { id: "emt_0046" }, { id: "emt_0047" }, { id: "emt_0048" }, { id: "emt_0049" }, { id: "emt_0050" }, { id: "emt_0051" }, { id: "emt_0052" }, { id: "emt_0053" }, { id: "emt_0054" }, { id: "emt_0055" }, { id: "emt_0056" }, { id: "emt_0057" }, { id: "emt_0058" }, { id: "emt_0059" }, { id: "emt_0060" }, { id: "emt_0061" }, { id: "emt_0062" }, { id: "emt_0063" }, { id: "emt_0064" }, { id: "emt_0065" }, { id: "emt_0066" }, { id: "emt_0067" }, { id: "emt_0068" }, { id: "emt_0069" }, { id: "emt_0070" }, { id: "emt_0071" }, { id: "emt_0072" }, { id: "emt_0073" }, { id: "emt_0074" }, { id: "emt_0075" }, { id: "emt_0076" }, { id: "emt_0077" }, { id: "emt_0078" }, { id: "emt_0079" }, { id: "emt_0080" }, { id: "emt_0081" }, { id: "emt_0082" }, { id: "emt_0083" }, { id: "emt_0084" }, { id: "emt_0085" }, { id: "emt_0086" }, { id: "emt_0087" }, { id: "emt_0088" }, { id: "emt_0089" }, { id: "emt_0090" }, { id: "emt_0091" }, { id: "emt_0092" }, { id: "emt_0093" }, { id: "emt_0094" }, { id: "emt_0095" }, { id: "emt_0096" }, { id: "emt_0097" }, { id: "emt_0098" }, { id: "emt_0099" }, { id: "emt_0100" }, { id: "emt_0101" }, { id: "emt_0102" }, { id: "emt_0103" }
     ],
-    "weapon.gun_ar_01": [
-        "gun_ar_01_skin_0000",
-        "gun_ar_01_skin_0001",
-        "gun_ar_01_skin_0002",
-        "gun_ar_01_skin_0003",
-        "gun_ar_01_skin_0004",
-        "gun_ar_01_skin_0005",
-        "gun_ar_01_skin_0006",
-        "gun_ar_01_skin_0007",
-        "gun_ar_01_skin_0008",
-        "gun_ar_01_skin_0009",
-        "gun_ar_01_skin_0010",
-        "gun_ar_01_skin_0011",
-        "gun_ar_01_skin_0012",
-        "gun_ar_01_skin_0013",
-        "gun_ar_01_skin_0014",
-        "gun_ar_01_skin_0015",
-        "gun_ar_01_skin_0016",
-        "gun_ar_01_skin_0017",
-        "gun_ar_01_skin_0018",
-        "gun_ar_01_skin_0019"
-    ],
-    "weapon.gun_ar_02": [
-        "gun_ar_02_skin_0000",
-        "gun_ar_02_skin_0001",
-        "gun_ar_02_skin_0002",
-        "gun_ar_02_skin_0003",
-        "gun_ar_02_skin_0004",
-        "gun_ar_02_skin_0005",
-        "gun_ar_02_skin_0006",
-        "gun_ar_02_skin_0007",
-        "gun_ar_02_skin_0008",
-        "gun_ar_02_skin_0009"
-    ],
-    "weapon.gun_ar_03": [
-      {"id": "gun_ar_03_skin_0000"},
-      {"id": "gun_ar_03_skin_0001"}
-    ],
-    "weapon.gun_smg_01": [
-        "gun_smg_01_skin_0000",
-        "gun_smg_01_skin_0001",
-        "gun_smg_01_skin_0002",
-        "gun_smg_01_skin_0003",
-        "gun_smg_01_skin_0004",
-        "gun_smg_01_skin_0005",
-        "gun_smg_01_skin_0006",
-        "gun_smg_01_skin_0007",
-        "gun_smg_01_skin_0008",
-        "gun_smg_01_skin_0009",
-        "gun_smg_01_skin_0010",
-        "gun_smg_01_skin_0011",
-        "gun_smg_01_skin_0012",
-        "gun_smg_01_skin_0013",
-        "gun_smg_01_skin_0014",
-        "gun_smg_01_skin_0015",
-        "gun_smg_01_skin_0016",
-        "gun_smg_01_skin_0017",
-        "gun_smg_01_skin_0018",
-        "gun_smg_01_skin_0019",
-        "gun_smg_01_skin_0020",
-        "gun_smg_01_skin_0021",
-        "gun_smg_01_skin_0022"
-    ],
-    "weapon.gun_smg_02": [
-        "gun_smg_02_skin_0000",
-        "gun_smg_02_skin_0001",
-        "gun_smg_02_skin_0002",
-        "gun_smg_02_skin_0003",
-        "gun_smg_02_skin_0004",
-        "gun_smg_02_skin_0005",
-        "gun_smg_02_skin_0006",
-        "gun_smg_02_skin_0007",
-        "gun_smg_02_skin_0008",
-        "gun_smg_02_skin_0009",
-        "gun_smg_02_skin_0010",
-        "gun_smg_02_skin_0011",
-        "gun_smg_02_skin_0012"
-    ],
-    "weapon.gun_sg_01": [
-        "gun_sg_01_skin_0000",
-        "gun_sg_01_skin_0001",
-        "gun_sg_01_skin_0002",
-        "gun_sg_01_skin_0003",
-        "gun_sg_01_skin_0004",
-        "gun_sg_01_skin_0005",
-        "gun_sg_01_skin_0006",
-        "gun_sg_01_skin_0007",
-        "gun_sg_01_skin_0008",
-        "gun_sg_01_skin_0009",
-        "gun_sg_01_skin_0010",
-        "gun_sg_01_skin_0011",
-        "gun_sg_01_skin_0012",
-        "gun_sg_01_skin_0013",
-        "gun_sg_01_skin_0014",
-        "gun_sg_01_skin_0015",
-        "gun_sg_01_skin_0016",
-        "gun_sg_01_skin_0017",
-        "gun_sg_01_skin_0018",
-        "gun_sg_01_skin_0019",
-        "gun_sg_01_skin_0020",
-        "gun_sg_01_skin_0021",
-        "gun_sg_01_skin_0022"
-    ],
-    "weapon.gun_lmg_01": [
-        "gun_lmg_01_skin_0000",
-        "gun_lmg_01_skin_0001",
-        "gun_lmg_01_skin_0002",
-        "gun_lmg_01_skin_0003",
-        "gun_lmg_01_skin_0004",
-        "gun_lmg_01_skin_0005",
-        "gun_lmg_01_skin_0006",
-        "gun_lmg_01_skin_0007",
-        "gun_lmg_01_skin_0008",
-        "gun_lmg_01_skin_0009",
-        "gun_lmg_01_skin_0011",
-        "gun_lmg_01_skin_0012",
-        "gun_lmg_01_skin_0013",
-        "gun_lmg_01_skin_0014",
-        "gun_lmg_01_skin_0015"
-    ],
-    "weapon.gun_hg_01": [
-        "gun_hg_01_skin_0000",
-        "gun_hg_01_skin_0001",
-        "gun_hg_01_skin_0002",
-        "gun_hg_01_skin_0003",
-        "gun_hg_01_skin_0004",
-        "gun_hg_01_skin_0005",
-        "gun_hg_01_skin_0006",
-        "gun_hg_01_skin_0007",
-        "gun_hg_01_skin_0008",
-        "gun_hg_01_skin_0009"
-    ],
-    "weapon.gun_sr_01": [
-        "gun_sr_01_skin_0000",
-        "gun_sr_01_skin_0001",
-        "gun_sr_01_skin_0002",
-        "gun_sr_01_skin_0003",
-        "gun_sr_01_skin_0004",
-        "gun_sr_01_skin_0005",
-        "gun_sr_01_skin_0006",
-        "gun_sr_01_skin_0007",
-        "gun_sr_01_skin_0008",
-        "gun_sr_01_skin_0009"
-    ],
-    "weapon.gun_hg_02": [
-        "gun_hg_02_skin_0000",
-        "gun_hg_02_skin_0001",
-        "gun_hg_02_skin_0002",
-        "gun_hg_02_skin_0003",
-        "gun_hg_02_skin_0004",
-        "gun_hg_02_skin_0005",
-        "gun_hg_02_skin_0006",
-        "gun_hg_02_skin_0007",
-        "gun_hg_02_skin_0008"
-    ],
-    "weapon.gun_lmg_02": [
-        "gun_lmg_02_skin_0000",
-        "gun_lmg_02_skin_0001",
-        "gun_lmg_02_skin_0002",
-        "gun_lmg_02_skin_0003",
-        "gun_lmg_02_skin_0004",
-        "gun_lmg_02_skin_0005",
-        "gun_lmg_02_skin_0006",
-        "gun_lmg_02_skin_0007"
-    ],
-    "weapon.gun_sr_02": [
-        "gun_sr_02_skin_0000",
-        "gun_sr_02_skin_0001",
-        "gun_sr_02_skin_0002",
-        "gun_sr_02_skin_0003",
-        "gun_sr_02_skin_0004",
-        "gun_sr_02_skin_0005",
-        "gun_sr_02_skin_0006",
-        "gun_sr_02_skin_0008"
-    ],
-    "weapon.gun_spl_01": [
-        "gun_spl_01_skin_0000"
-    ],
-    "weapon.gun_sg_02": [
-        "gun_sg_02_skin_0000",
-        "gun_sg_02_skin_0001",
-        "gun_sg_02_skin_0002",
-        "gun_sg_02_skin_0003",
-        "gun_sg_02_skin_0004"
-    ]
-  }
+  "weapon.gun_ar_01": [
+    {"id": "gun_ar_01_skin_0000"},
+    {"id": "gun_ar_01_skin_0001"},
+    {"id": "gun_ar_01_skin_0002"},
+    {"id": "gun_ar_01_skin_0003"},
+    {"id": "gun_ar_01_skin_0004"},
+    {"id": "gun_ar_01_skin_0005"},
+    {"id": "gun_ar_01_skin_0006"},
+    {"id": "gun_ar_01_skin_0007"},
+    {"id": "gun_ar_01_skin_0008"},
+    {"id": "gun_ar_01_skin_0009"},
+    {"id": "gun_ar_01_skin_0010"},
+    {"id": "gun_ar_01_skin_0011"},
+    {"id": "gun_ar_01_skin_0012"},
+    {"id": "gun_ar_01_skin_0013"},
+    {"id": "gun_ar_01_skin_0014"},
+    {"id": "gun_ar_01_skin_0015"},
+    {"id": "gun_ar_01_skin_0016"},
+    {"id": "gun_ar_01_skin_0017"},
+    {"id": "gun_ar_01_skin_0018"},
+    {"id": "gun_ar_01_skin_0019"}
+  ],
+  "weapon.gun_ar_02": [
+    {"id": "gun_ar_02_skin_0000"},
+    {"id": "gun_ar_02_skin_0001"},
+    {"id": "gun_ar_02_skin_0002"},
+    {"id": "gun_ar_02_skin_0003"},
+    {"id": "gun_ar_02_skin_0004"},
+    {"id": "gun_ar_02_skin_0005"},
+    {"id": "gun_ar_02_skin_0006"},
+    {"id": "gun_ar_02_skin_0007"},
+    {"id": "gun_ar_02_skin_0008"},
+    {"id": "gun_ar_02_skin_0009"}
+  ],
+  "weapon.gun_ar_03": [
+    {"id": "gun_ar_03_skin_0000"},
+    {"id": "gun_ar_03_skin_0001"}
+  ],
+  "weapon.gun_smg_01": [
+    {"id": "gun_smg_01_skin_0000"},
+    {"id": "gun_smg_01_skin_0001"},
+    {"id": "gun_smg_01_skin_0002"},
+    {"id": "gun_smg_01_skin_0003"},
+    {"id": "gun_smg_01_skin_0004"},
+    {"id": "gun_smg_01_skin_0005"},
+    {"id": "gun_smg_01_skin_0006"},
+    {"id": "gun_smg_01_skin_0007"},
+    {"id": "gun_smg_01_skin_0008"},
+    {"id": "gun_smg_01_skin_0009"},
+    {"id": "gun_smg_01_skin_0010"},
+    {"id": "gun_smg_01_skin_0011"},
+    {"id": "gun_smg_01_skin_0012"},
+    {"id": "gun_smg_01_skin_0013"},
+    {"id": "gun_smg_01_skin_0014"},
+    {"id": "gun_smg_01_skin_0015"},
+    {"id": "gun_smg_01_skin_0016"},
+    {"id": "gun_smg_01_skin_0017"},
+    {"id": "gun_smg_01_skin_0018"},
+    {"id": "gun_smg_01_skin_0019"},
+    {"id": "gun_smg_01_skin_0020"},
+    {"id": "gun_smg_01_skin_0021"},
+    {"id": "gun_smg_01_skin_0022"}
+  ],
+  "weapon.gun_smg_02": [
+    {"id": "gun_smg_02_skin_0000"},
+    {"id": "gun_smg_02_skin_0001"},
+    {"id": "gun_smg_02_skin_0002"},
+    {"id": "gun_smg_02_skin_0003"},
+    {"id": "gun_smg_02_skin_0004"},
+    {"id": "gun_smg_02_skin_0005"},
+    {"id": "gun_smg_02_skin_0006"},
+    {"id": "gun_smg_02_skin_0007"},
+    {"id": "gun_smg_02_skin_0008"},
+    {"id": "gun_smg_02_skin_0009"},
+    {"id": "gun_smg_02_skin_0010"},
+    {"id": "gun_smg_02_skin_0011"},
+    {"id": "gun_smg_02_skin_0012"}
+  ],
+  "weapon.gun_sg_01": [
+    {"id": "gun_sg_01_skin_0000"},
+    {"id": "gun_sg_01_skin_0001"},
+    {"id": "gun_sg_01_skin_0002"},
+    {"id": "gun_sg_01_skin_0003"},
+    {"id": "gun_sg_01_skin_0004"},
+    {"id": "gun_sg_01_skin_0005"},
+    {"id": "gun_sg_01_skin_0006"},
+    {"id": "gun_sg_01_skin_0007"},
+    {"id": "gun_sg_01_skin_0008"},
+    {"id": "gun_sg_01_skin_0009"},
+    {"id": "gun_sg_01_skin_0010"},
+    {"id": "gun_sg_01_skin_0011"},
+    {"id": "gun_sg_01_skin_0012"},
+    {"id": "gun_sg_01_skin_0013"},
+    {"id": "gun_sg_01_skin_0014"},
+    {"id": "gun_sg_01_skin_0015"},
+    {"id": "gun_sg_01_skin_0016"},
+    {"id": "gun_sg_01_skin_0017"},
+    {"id": "gun_sg_01_skin_0018"},
+    {"id": "gun_sg_01_skin_0019"},
+    {"id": "gun_sg_01_skin_0020"},
+    {"id": "gun_sg_01_skin_0021"},
+    {"id": "gun_sg_01_skin_0022"}
+  ],
+  "weapon.gun_lmg_01": [
+    {"id": "gun_lmg_01_skin_0000"},
+    {"id": "gun_lmg_01_skin_0001"},
+    {"id": "gun_lmg_01_skin_0002"},
+    {"id": "gun_lmg_01_skin_0003"},
+    {"id": "gun_lmg_01_skin_0004"},
+    {"id": "gun_lmg_01_skin_0005"},
+    {"id": "gun_lmg_01_skin_0006"},
+    {"id": "gun_lmg_01_skin_0007"},
+    {"id": "gun_lmg_01_skin_0008"},
+    {"id": "gun_lmg_01_skin_0009"},
+    {"id": "gun_lmg_01_skin_0011"},
+    {"id": "gun_lmg_01_skin_0012"},
+    {"id": "gun_lmg_01_skin_0013"},
+    {"id": "gun_lmg_01_skin_0014"},
+    {"id": "gun_lmg_01_skin_0015"}
+  ],
+  "weapon.gun_hg_01": [
+    {"id": "gun_hg_01_skin_0000"},
+    {"id": "gun_hg_01_skin_0001"},
+    {"id": "gun_hg_01_skin_0002"},
+    {"id": "gun_hg_01_skin_0003"},
+    {"id": "gun_hg_01_skin_0004"},
+    {"id": "gun_hg_01_skin_0005"},
+    {"id": "gun_hg_01_skin_0006"},
+    {"id": "gun_hg_01_skin_0007"},
+    {"id": "gun_hg_01_skin_0008"},
+    {"id": "gun_hg_01_skin_0009"}
+  ],
+  "weapon.gun_sr_01": [
+    {"id": "gun_sr_01_skin_0000"},
+    {"id": "gun_sr_01_skin_0001"},
+    {"id": "gun_sr_01_skin_0002"},
+    {"id": "gun_sr_01_skin_0003"},
+    {"id": "gun_sr_01_skin_0004"},
+    {"id": "gun_sr_01_skin_0005"},
+    {"id": "gun_sr_01_skin_0006"},
+    {"id": "gun_sr_01_skin_0007"},
+    {"id": "gun_sr_01_skin_0008"},
+    {"id": "gun_sr_01_skin_0009"}
+  ],
+  "weapon.gun_hg_02": [
+    {"id": "gun_hg_02_skin_0000"},
+    {"id": "gun_hg_02_skin_0001"},
+    {"id": "gun_hg_02_skin_0002"},
+    {"id": "gun_hg_02_skin_0003"},
+    {"id": "gun_hg_02_skin_0004"},
+    {"id": "gun_hg_02_skin_0005"},
+    {"id": "gun_hg_02_skin_0006"},
+    {"id": "gun_hg_02_skin_0007"},
+    {"id": "gun_hg_02_skin_0008"}
+  ],
+  "weapon.gun_lmg_02": [
+    {"id": "gun_lmg_02_skin_0000"},
+    {"id": "gun_lmg_02_skin_0001"},
+    {"id": "gun_lmg_02_skin_0002"},
+    {"id": "gun_lmg_02_skin_0003"},
+    {"id": "gun_lmg_02_skin_0004"},
+    {"id": "gun_lmg_02_skin_0005"},
+    {"id": "gun_lmg_02_skin_0006"},
+    {"id": "gun_lmg_02_skin_0007"}
+  ],
+  "weapon.gun_sr_02": [
+    {"id": "gun_sr_02_skin_0000"},
+    {"id": "gun_sr_02_skin_0001"},
+    {"id": "gun_sr_02_skin_0002"},
+    {"id": "gun_sr_02_skin_0003"},
+    {"id": "gun_sr_02_skin_0004"},
+    {"id": "gun_sr_02_skin_0005"},
+    {"id": "gun_sr_02_skin_0006"},
+    {"id": "gun_sr_02_skin_0008"}
+  ],
+  "weapon.gun_spl_01": [
+    {"id": "gun_spl_01_skin_0000"}
+  ],
+  "weapon.gun_sg_02": [
+    {"id": "gun_sg_02_skin_0000"},
+    {"id": "gun_sg_02_skin_0001"},
+    {"id": "gun_sg_02_skin_0002"},
+    {"id": "gun_sg_02_skin_0003"},
+    {"id": "gun_sg_02_skin_0004"}
+  ]
+}
 };
 
 
@@ -332,20 +332,20 @@ app.all("*", async (req, res) => {
           json.owned["profile.avatar"] = customData.owned["profile.avatar"];
           json.owned.trails = customData.owned.trails;
           json.owned.emotes = customData.owned.emotes;
-          //json.owned["weapon.gun_mle_01"] = customData.owned["weapon.gun_mle_01"];
-          //json.owned["weapon.gun_sg_01"] = customData.owned["weapon.gun_sg_01"];
-          //json.owned["weapon.gun_sg_02"] = customData.owned["weapon.gun_sg_02"];
-          //json.owned["weapon.gun_hg_01"] = customData.owned["weapon.gun_hg_01"];
-          //json.owned["weapon.gun_hg_02"] = customData.owned["weapon.gun_hg_02"];
-          //json.owned["weapon.gun_smg_01"] = customData.owned["weapon.gun_smg_01"];
-         // json.owned["weapon.gun_smg_02"] = customData.owned["weapon.gun_smg_02"];
-          //json.owned["weapon.gun_ar_01"] = customData.owned["weapon.gun_ar_01"];
-          //json.owned["weapon.gun_ar_02"] = customData.owned["weapon.gun_ar_02"];
+          json.owned["weapon.gun_mle_01"] = customData.owned["weapon.gun_mle_01"];
+          json.owned["weapon.gun_sg_01"] = customData.owned["weapon.gun_sg_01"];
+          json.owned["weapon.gun_sg_02"] = customData.owned["weapon.gun_sg_02"];
+          json.owned["weapon.gun_hg_01"] = customData.owned["weapon.gun_hg_01"];
+          json.owned["weapon.gun_hg_02"] = customData.owned["weapon.gun_hg_02"];
+          json.owned["weapon.gun_smg_01"] = customData.owned["weapon.gun_smg_01"];
+          json.owned["weapon.gun_smg_02"] = customData.owned["weapon.gun_smg_02"];
+          json.owned["weapon.gun_ar_01"] = customData.owned["weapon.gun_ar_01"];
+          json.owned["weapon.gun_ar_02"] = customData.owned["weapon.gun_ar_02"];
           json.owned["weapon.gun_ar_03"] = customData.owned["weapon.gun_ar_03"];
-          //json.owned["weapon.gun_lmg_01"] = customData.owned["weapon.gun_lmg_01"];
-          //json.owned["weapon.gun_lmg_02"] = customData.owned["weapon.gun_lmg_02"];
-          //json.owned["weapon.gun_sr_01"] = customData.owned["weapon.gun_sr_01"];
-          //json.owned["weapon.gun_sr_02"] = customData.owned["weapon.gun_sr_02"];
+          json.owned["weapon.gun_lmg_01"] = customData.owned["weapon.gun_lmg_01"];
+          json.owned["weapon.gun_lmg_02"] = customData.owned["weapon.gun_lmg_02"];
+          json.owned["weapon.gun_sr_01"] = customData.owned["weapon.gun_sr_01"];
+          json.owned["weapon.gun_sr_02"] = customData.owned["weapon.gun_sr_02"];
 
         }
 
