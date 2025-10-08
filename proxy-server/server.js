@@ -8,7 +8,7 @@ app.use(express.urlencoded({ extended: true }));
 // ✅ Replace
 const customData = {
   id: 123,
-  name: "Indus_Prem",
+  name: "VizlaGaming",
   "group": "admin",
   "shortId": "ll5natt6",
   levelInfo: {"id": 149},
