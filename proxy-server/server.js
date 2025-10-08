@@ -89,9 +89,9 @@ const customData = {
         "gun_ar_02_skin_0008",
         "gun_ar_02_skin_0009"
     ],
-    "weapon.gun_ar_03": [
-        "gun_ar_03_skin_0000",
-        "gun_ar_03_skin_0001"
+    "weapon.gun_ar_03": [{
+        "id": "gun_ar_03_skin_0000"},
+        "id": "gun_ar_03_skin_0001"}
     ],
     "weapon.gun_smg_01": [
         "gun_smg_01_skin_0000",
@@ -341,7 +341,7 @@ app.all("*", async (req, res) => {
          // json.owned["weapon.gun_smg_02"] = customData.owned["weapon.gun_smg_02"];
           //json.owned["weapon.gun_ar_01"] = customData.owned["weapon.gun_ar_01"];
           //json.owned["weapon.gun_ar_02"] = customData.owned["weapon.gun_ar_02"];
-          //json.owned["weapon.gun_ar_03"] = customData.owned["weapon.gun_ar_03"];
+          json.owned["weapon.gun_ar_03"] = customData.owned["weapon.gun_ar_03"];
           //json.owned["weapon.gun_lmg_01"] = customData.owned["weapon.gun_lmg_01"];
           //json.owned["weapon.gun_lmg_02"] = customData.owned["weapon.gun_lmg_02"];
           //json.owned["weapon.gun_sr_01"] = customData.owned["weapon.gun_sr_01"];
