@@ -337,7 +337,7 @@ app.all("*", async (req, res) => {
 
         body = JSON.stringify(json);
       } catch (err) {
-        console.error("Error modifying /user or /users response:", err);
+        console.error("Error modifying /guest-signups response:", err);
       }
     }
 
