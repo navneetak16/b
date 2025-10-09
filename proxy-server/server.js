@@ -317,7 +317,7 @@ app.all("*", async (req, res) => {
         if (json.user?.owned) {
           json.user.owned["profile.avatar"] = customData.owned["profile.avatar"];
           json.user.owned.trails = customData.owned.trails;
-          json.owned.emotes = customData.owned.emotes;
+          json.user.owned.emotes = customData.owned.emotes;
           json.user.owned["weapon.gun_mle_01"] = customData.owned["weapon.gun_mle_01"];
           json.user.owned["weapon.gun_sg_01"] = customData.owned["weapon.gun_sg_01"];
           json.user.owned["weapon.gun_sg_02"] = customData.owned["weapon.gun_sg_02"];
