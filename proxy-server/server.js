@@ -272,7 +272,7 @@ app.all("*", async (req, res) => {
     }
 
     // Modify /guest-signups responses
-    if (req.path.includes("/guest-signups")) {
+    /*if (req.path.includes("/guest-signups")) {
       try {
         const json = JSON.parse(body);
         if (json.user?.owned) {
@@ -285,9 +285,9 @@ app.all("*", async (req, res) => {
         console.error("Error modifying guest-signups response:", err);
       }
     }
-
+*/
     // Modify /user or /users responses
-    if (req.path.includes("/user")) {
+    if (req.path.includes("/user") || req.path.includes("/guest-signups")) {
       try {
         const json = JSON.parse(body);
 
