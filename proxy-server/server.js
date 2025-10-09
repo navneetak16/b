@@ -266,7 +266,7 @@ app.all("*", async (req, res) => {
 
     let body = await upstreamResponse.text();
 
-    // /get-broadcasts: just remove If-None-Match
+    // /get-broadcasts: just remove If-None-Match 
     if (req.path === "/get-broadcasts") {
       
     }
