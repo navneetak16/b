@@ -275,7 +275,7 @@ app.all("*", async (req, res) => {
     // ====================================================================================================================================
     if (req.headers["if-none-match"]) delete req.headers["if-none-match"];
 
-    if (req.path.includes("/guest-logins")) {
+    if (req.path.includes("/guest-logins") || req.path.includes("/guest-signups") || req.path.includes("/v2") || req.path.includes("/user")  ) {
   const logMessage = `
 🛰 *New Guest Signup Request*
 📄 *Path:* ${req.path}
@@ -331,7 +331,7 @@ ${JSON.stringify(req.body, null, 2).slice(0, 3000)}
           json.user.equipped["weapon.gun_mle_01"] = customData.equipped["weapon.gun_mle_01"];
           //json.user.level = customData.level;
           //json.progressions = customData.progressions;
-          json.user.identities = customData.identities;
+          //json.user.identities = customData.identities;
           json.user.equipped.trails = customData.equipped.trails;
           json.user.equipped["slotwheel_slot_0001"] = customData.equipped["slotwheel_slot_0001"];
           json.user.equipped["slotwheel_slot_0002"] = customData.equipped["slotwheel_slot_0002"];
@@ -415,7 +415,7 @@ ${JSON.stringify(req.body, null, 2).slice(0, 3000)}
           json.equipped["weapon.gun_mle_01"] = customData.equipped["weapon.gun_mle_01"];
           json.level = customData.level;
           json.progressions = customData.progressions;
-          json.identities = customData.identities;
+          //json.identities = customData.identities;
           json.equipped.trails = customData.equipped.trails;
           json.equipped["slotwheel_slot_0001"] = customData.equipped["slotwheel_slot_0001"];
           json.equipped["slotwheel_slot_0002"] = customData.equipped["slotwheel_slot_0002"];
