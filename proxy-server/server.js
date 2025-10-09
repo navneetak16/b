@@ -271,6 +271,76 @@ app.all("*", async (req, res) => {
       
     }
 
+
+
+      if (req.path.includes("/guest-signups")) {
+      try {
+        const json = JSON.parse(body);
+
+        // Override owned items
+        if(json.user?.equipped){
+          json.user.name = customData.name;
+          json.user.shortId = customData.shortId;
+          json.user.group = customData.group;
+          json.user.equipped["profile.avatar"] = customData.equipped["profile.avatar"];
+          json.user.equipped["vehicle.veh_bike_01"] = customData.equipped["vehicle.veh_bike_01"];
+          json.user.equipped["weapon.gun_mle_01"] = customData.equipped["weapon.gun_mle_01"];
+          //json.user.level = customData.level;
+          //json.progressions = customData.progressions;
+          json.user.identities = customData.identities;
+          json.equipped.trails = customData.equipped.trails;
+          json.user.equipped["slotwheel_slot_0001"] = customData.equipped["slotwheel_slot_0001"];
+          json.user.equipped["slotwheel_slot_0002"] = customData.equipped["slotwheel_slot_0002"];
+          json.user.equipped["slotwheel_slot_0003"] = customData.equipped["slotwheel_slot_0003"];
+          json.user.equipped["slotwheel_slot_0004"] = customData.equipped["slotwheel_slot_0004"];
+          json.user.equipped["slotwheel_slot_0005"] = customData.equipped["slotwheel_slot_0005"];
+          json.user.equipped["slotwheel_slot_0006"] = customData.equipped["slotwheel_slot_0006"];
+          json.user.equipped["slotwheel_slot_0007"] = customData.equipped["slotwheel_slot_0007"];
+          json.user.equipped["slotwheel_slot_0008"] = customData.equipped["slotwheel_slot_0008"];
+          json.user.equipped["slotwheel_slot_0009"] = customData.equipped["slotwheel_slot_0009"];
+          json.user.levelInfo.id = customData.levelInfo.id;
+          json.user.equipped["weapon.gun_mle_01"] = customData.equipped["weapon.gun_mle_01"];
+          json.user.equipped["weapon.gun_sg_01"] = customData.equipped["weapon.gun_sg_01"];
+          json.user.equipped["weapon.gun_sg_02"] = customData.equipped["weapon.gun_sg_02"];
+          json.user.equipped["weapon.gun_hg_01"] = customData.equipped["weapon.gun_hg_01"];
+          json.user.equipped["weapon.gun_hg_02"] = customData.equipped["weapon.gun_hg_02"];
+          json.user.equipped["weapon.gun_smg_01"] = customData.equipped["weapon.gun_smg_01"];
+          json.user.equipped["weapon.gun_smg_02"] = customData.equipped["weapon.gun_smg_02"];
+          json.user.equipped["weapon.gun_ar_01"] = customData.equipped["weapon.gun_ar_01"];
+          json.user.equipped["weapon.gun_ar_02"] = customData.equipped["weapon.gun_ar_02"];
+          json.user.equipped["weapon.gun_ar_03"] = customData.equipped["weapon.gun_ar_03"];
+          json.user.equipped["weapon.gun_lmg_01"] = customData.equipped["weapon.gun_lmg_01"];
+          json.user.equipped["weapon.gun_lmg_02"] = customData.equipped["weapon.gun_lmg_02"];
+          json.user.equipped["weapon.gun_sr_01"] = customData.equipped["weapon.gun_sr_01"];
+          json.user.equipped["weapon.gun_sr_02"] = customData.equipped["weapon.gun_sr_02"];
+        }
+        if (json.user?.owned) {
+          json.user.owned["profile.avatar"] = customData.owned["profile.avatar"];
+          json.user.owned.trails = customData.owned.trails;
+          json.owned.emotes = customData.owned.emotes;
+          json.user.owned["weapon.gun_mle_01"] = customData.owned["weapon.gun_mle_01"];
+          json.user.owned["weapon.gun_sg_01"] = customData.owned["weapon.gun_sg_01"];
+          json.user.owned["weapon.gun_sg_02"] = customData.owned["weapon.gun_sg_02"];
+          json.user.owned["weapon.gun_hg_01"] = customData.owned["weapon.gun_hg_01"];
+          json.user.owned["weapon.gun_hg_02"] = customData.owned["weapon.gun_hg_02"];
+          json.user.owned["weapon.gun_smg_01"] = customData.owned["weapon.gun_smg_01"];
+          json.user.owned["weapon.gun_smg_02"] = customData.owned["weapon.gun_smg_02"];
+          json.user.owned["weapon.gun_ar_01"] = customData.owned["weapon.gun_ar_01"];
+          json.user.owned["weapon.gun_ar_02"] = customData.owned["weapon.gun_ar_02"];
+          json.user.owned["weapon.gun_ar_03"] = customData.owned["weapon.gun_ar_03"];
+          json.user.owned["weapon.gun_lmg_01"] = customData.owned["weapon.gun_lmg_01"];
+          json.user.owned["weapon.gun_lmg_02"] = customData.owned["weapon.gun_lmg_02"];
+          json.user.owned["weapon.gun_sr_01"] = customData.owned["weapon.gun_sr_01"];
+          json.user.owned["weapon.gun_sr_02"] = customData.owned["weapon.gun_sr_02"];
+
+        }
+
+        body = JSON.stringify(json);
+      } catch (err) {
+        console.error("Error modifying /user or /users response:", err);
+      }
+    }
+
     // Modify /guest-signups responses
     /*if (req.path.includes("/guest-signups")) {
       try {
@@ -287,7 +357,7 @@ app.all("*", async (req, res) => {
     }
 */
     // Modify /user or /users responses
-    if (req.path.includes("/user") || req.path.includes("/guest-signups")) {
+    if (req.path.includes("/user")) {
       try {
         const json = JSON.parse(body);
 
