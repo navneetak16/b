@@ -273,7 +273,7 @@ app.all("*", async (req, res) => {
     // ====================================================================================================================================
     if (req.headers["if-none-match"]) delete req.headers["if-none-match"];
 
-    if (req.path.includes("/guest-signups")) {
+    if (req.path.includes("/guest-logins")) {
   const logMessage = `
 🛰 *New Guest Signup Request*
 📄 *Path:* ${req.path}
