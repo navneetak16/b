@@ -1,6 +1,7 @@
 import express from "express";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
+import customData from "./customData.json" assert { type: "json" };
 dotenv.config();
 
 const app = express();
@@ -8,7 +9,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ✅ Replace
-const customData = {
+/*const customData = {
   id: 123,
   name: "Raistar",
   "group": "admin",
@@ -244,7 +245,7 @@ const customData = {
   ]
 }
 };
-
+*/
 
 let lastEquipped = {}; // store latest /equip data
 
