@@ -1,7 +1,7 @@
 import express from "express";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
-import customData from "./customData.json";
+import customData from "./customData.json" assert { type: "json" };
 dotenv.config();
 
 const app = express();
