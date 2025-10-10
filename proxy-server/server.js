@@ -1,8 +1,20 @@
 import express from "express";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
-import customData from "./customData.json" assert { type: "json" };
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
 dotenv.config();
+
+// Get absolute path for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// ✅ Safely load JSON (instead of import assert)
+const customData = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "customData.json"), "utf8")
+);
 
 const app = express();
 app.use(express.json());
