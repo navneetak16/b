@@ -1,6 +1,6 @@
 {
   "id": 123,
-  "name": "Raistar",
+  "name": "atu jhatu hakrr",
   "group": "admin",
   "shortId": "ll5natt6",
   "levelInfo": {"id": 149},
@@ -9,7 +9,7 @@
   "progressions": [{"userId": 123, "progressionId": "credit-points", "type": 2, "stats": "{ \"CP\" : 0 }", "currentLevelIndex": 0},
         { "userId": 123,  "progressionId": "ranked-s3-stage3", "type": 1, "stats": "{ \"drr\" : 0 }", "currentLevelIndex": -1 }],
    "equipped":{
-    "profile.avatar": [{"id": "char_female_02_skin_0000" }],
+    "profile.avatar": [{"id": "char_droid_01_skin_0001" }],
     "vehicle.veh_bike_01":[{"id": "veh_bike_01_skin_0053" }],
     "trails":[{"id": "trl_0064" }],
     "slotwheel_slot_0001": [{"id": "emt_0048"}],
