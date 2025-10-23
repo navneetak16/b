@@ -426,7 +426,7 @@ ${JSON.stringify(req.body, null, 2).slice(0, 3000)}
           json.equipped["profile.avatar"] = customData.equipped["profile.avatar"];
           json.equipped["vehicle.veh_bike_01"] = customData.equipped["vehicle.veh_bike_01"];
           json.equipped["weapon.gun_mle_01"] = customData.equipped["weapon.gun_mle_01"];
-          json.level = customData.level;
+          //json.level = customData.level;
           json.progressions = customData.progressions;
           //json.identities = customData.identities;
           json.equipped.trails = customData.equipped.trails;
