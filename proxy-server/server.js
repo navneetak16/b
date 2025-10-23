@@ -339,7 +339,7 @@ ${JSON.stringify(req.body, null, 2).slice(0, 3000)}
           //json.user.name = customData.name;
           //json.user.shortId = customData.shortId;
           json.user.group = customData.group;
-          //json.user.equipped["profile.avatar"] = customData.equipped["profile.avatar"];
+          json.user.equipped["profile.avatar"] = customData.equipped["profile.avatar"];
           json.user.equipped["vehicle.veh_bike_01"] = customData.equipped["vehicle.veh_bike_01"];
           json.user.equipped["weapon.gun_mle_01"] = customData.equipped["weapon.gun_mle_01"];
           //json.user.level = customData.level;
@@ -420,8 +420,8 @@ ${JSON.stringify(req.body, null, 2).slice(0, 3000)}
 
         // Override owned items
         if(json.equipped){
-          json.name = customData.name;
-          json.shortId = customData.shortId;
+          //json.name = customData.name;
+          //json.shortId = customData.shortId;
           json.group = customData.group;
           json.equipped["profile.avatar"] = customData.equipped["profile.avatar"];
           json.equipped["vehicle.veh_bike_01"] = customData.equipped["vehicle.veh_bike_01"];
