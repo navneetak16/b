@@ -430,6 +430,9 @@ ${JSON.stringify(req.body, null, 2).slice(0, 3000)}
           json.progressions = customData.progressions;
           //json.identities = customData.identities;
           json.equipped.trails = customData.equipped.trails;
+          json.equipped.modifier_slot_0000 = customData.equipped.modifier_slot_0000;
+          json.equipped.modifier_slot_0001 = customData.equipped.modifier_slot_0001;
+          json.equipped.modifier_slot_0002 = customData.equipped.modifier_slot_0002;
           json.equipped["slotwheel_slot_0001"] = customData.equipped["slotwheel_slot_0001"];
           json.equipped["slotwheel_slot_0002"] = customData.equipped["slotwheel_slot_0002"];
           json.equipped["slotwheel_slot_0003"] = customData.equipped["slotwheel_slot_0003"];
