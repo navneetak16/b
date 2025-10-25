@@ -10,6 +10,9 @@
         { "userId": 123,  "progressionId": "ranked-s3-stage3", "type": 1, "stats": "{ \"drr\" : 0 }", "currentLevelIndex": -1 }],
    "equipped":{
     "profile.avatar": [{"id": "char_female_04_skin_0000" }],
+    "modifier_slot_0000":[{"id":"modifier_0001"}],
+    "modifier_slot_0001":[{"id":"modifier_0002"}],
+    "modifier_slot_0002":[{"id":"modifier_0003"}],
     "vehicle.veh_bike_01":[{"id": "veh_bike_01_skin_0053" }],
     "trails":[{"id": "trl_0033" }],
     "slotwheel_slot_0001": [{"id": "emt_0048"}],
