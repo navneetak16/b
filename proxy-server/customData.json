@@ -9,7 +9,7 @@
   "progressions": [{"userId": 123, "progressionId": "credit-points", "type": 2, "stats": "{ \"CP\" : 0 }", "currentLevelIndex": 0},
         { "userId": 123,  "progressionId": "ranked-s3-stage3", "type": 1, "stats": "{ \"drr\" : 0 }", "currentLevelIndex": -1 }],
    "equipped":{
-    "profile.avatar": [{"id": "char_female_04_skin_0000" }],
+    "profile.avatar": [{"id": "char_male_09_skin_0000" }],
     "modifier_slot_0000":[{"id":"modifier_0001"}],
     "modifier_slot_0001":[{"id":"modifier_0002"}],
     "modifier_slot_0002":[{"id":"modifier_0003"}],
