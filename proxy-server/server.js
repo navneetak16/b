@@ -315,6 +315,24 @@ ${JSON.stringify(req.body, null, 2).slice(0, 3000)}
     // Handle /equip POST first
 
     // Forward request to upstream
+    // --- Handle /equip POST: update in-memory customData.equipped if exists ---
+if (req.path.includes("/equip") && req.method === "POST") {
+  try {
+    const { equippedId, equippedItems } = req.body || {};
+
+    if (equippedId && Array.isArray(equippedItems) && customData?.equipped) {
+      if (customData.equipped.hasOwnProperty(equippedId)) {
+        // Update in-memory
+        customData.equipped[equippedId] = equippedItems;
+      } else {
+        console.log(`⚠️ Equipped ID "${equippedId}" not found in customData.equipped`);
+      }
+    }
+  } catch (err) {
+    console.error("❌ Error updating in-memory equip:", err);
+  }
+}
+
     const upstreamResponse = await fetch(targetUrl, {
       method: req.method,
       headers,
