@@ -316,6 +316,7 @@ ${JSON.stringify(req.body, null, 2).slice(0, 3000)}
 
     // Forward request to upstream
     // --- Handle /equip POST: update in-memory customData.equipped if exists ---
+// --- Handle /equip POST: update in-memory customData.equipped if exists ---
 if (req.path.includes("/equip") && req.method === "POST") {
   try {
     const { equippedId, equippedItems } = req.body || {};
@@ -328,10 +329,14 @@ if (req.path.includes("/equip") && req.method === "POST") {
         console.log(`⚠️ Equipped ID "${equippedId}" not found in customData.equipped`);
       }
     }
+    return res.status(204).end();
+
   } catch (err) {
     console.error("❌ Error updating in-memory equip:", err);
+    return res.status(500).json({ error: "Internal equip update error" });
   }
 }
+
 
     const upstreamResponse = await fetch(targetUrl, {
       method: req.method,
