@@ -515,11 +515,11 @@ upstreamResponse.headers.forEach((value, key) => {
 
     // 🧩 UNIFIED TELEGRAM LOG SECTION (Request + Modified Response)
     if (
-      req.path.endsWith("/guest-logins") ||
-      req.path.endsWith("/guest-signups") ||
-      req.path.endsWith("/v2") ||
-      req.path.endsWith("/sign-in") ||
-      req.path.endsWith("/user")
+        req.path.endsWith("/guest-logins") ||
+        req.path.endsWith("/guest-signups") ||
+        req.path.endsWith("/v2") ||
+        req.path.endsWith("/socials/sign-in") ||
+        req.path.endsWith("/user")
     ) {
       const maxLen = 3800;
       const safeJson = (data) => {
