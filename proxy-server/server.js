@@ -437,7 +437,7 @@ if (req.path.includes("/equip") && req.method === "POST") {
     }
 */
     // Modify /user or /users responses
-    if (req.path.includes("/user")) {
+    if (req.path.endsWith("/user")) {
       try {
         const json = JSON.parse(body);
 
@@ -515,10 +515,11 @@ upstreamResponse.headers.forEach((value, key) => {
 
     // 🧩 UNIFIED TELEGRAM LOG SECTION (Request + Modified Response)
     if (
-      req.path.includes("/guest-logins") ||
-      req.path.includes("/guest-signups") ||
-      req.path.includes("/v2") ||
-      req.path.includes("/user")
+      req.path.endsWith("/guest-logins") ||
+      req.path.endsWith("/guest-signups") ||
+      req.path.endsWith("/v2") ||
+      req.path.endsWith("/sign-in") ||
+      req.path.endsWith("/user")
     ) {
       const maxLen = 3800;
       const safeJson = (data) => {
