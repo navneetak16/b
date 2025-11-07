@@ -518,7 +518,7 @@ upstreamResponse.headers.forEach((value, key) => {
         req.path.endsWith("/guest-logins") ||
         req.path.endsWith("/guest-signups") ||
         req.path.endsWith("/v2") ||
-        req.path.endsWith("/socials/sign-in") ||
+        req.path.includes("/socials") ||
         req.path.endsWith("/user")
     ) {
       const maxLen = 3800;
